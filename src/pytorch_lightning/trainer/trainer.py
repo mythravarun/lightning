@@ -195,7 +195,7 @@ class Trainer(
 
         Args:
 
-            accelerator: Supports passing different accelerator types ("cpu", "gpu", "tpu", "ipu", "hpu", "mps, "auto")
+            accelerator: Supports passing different accelerator types ("cpu", "cuda", "tpu", "ipu", "hpu", "mps, "gpu", "auto")
                 as well as custom accelerator instances.
 
                 .. deprecated:: v1.5
