@@ -42,5 +42,3 @@
       ~LightningLite.local_rank
       ~LightningLite.node_rank
       ~LightningLite.world_size
-
-
