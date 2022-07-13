@@ -3,7 +3,7 @@
 
 **Build high-performance PyTorch models and deploy them with Lightning Apps (scalable end-to-end ML systems).**
 
-______________________________________________________________________
+---
 
 <p align="center">
   <a href="https://www.lightning.ai/">Lightning Gallery</a> •
@@ -36,7 +36,7 @@ ______________________________________________________________________
 
 ###### \*Codecov is > 90%+ but build delays may show less
 
-______________________________________________________________________
+---
 
 ## PyTorch Lightning is just organized PyTorch
 
@@ -55,7 +55,7 @@ Once you're done building models, publish a paper demo or build a full productio
 
 ### [Learn more about Lightning Apps](src/lightning_app/README.md)
 
-______________________________________________________________________
+---
 
 ## Lightning Design Philosophy
 
@@ -76,7 +76,7 @@ Once you do this, you can train on multiple-GPUs, TPUs, CPUs and even in 16-bit 
 
 Get started with our [2 step guide](https://pytorch-lightning.readthedocs.io/en/latest/starter/new-project.html)
 
-______________________________________________________________________
+---
 
 ## Continuous Integration
 
@@ -102,7 +102,7 @@ Lightning is rigorously tested across multiple GPUs, TPUs CPUs and against major
 </center>
 </details>
 
-______________________________________________________________________
+---
 
 ## How To Use
 
@@ -180,7 +180,7 @@ import pytorch_lightning as pl
 
 ### Step 2: Define a LightningModule (nn.Module subclass)
 
-A LightningModule defines a full *system* (ie: a GAN, autoencoder, BERT or a simple Image Classifier).
+A LightningModule defines a full _system_ (ie: a GAN, autoencoder, BERT or a simple Image Classifier).
 
 ```python
 class LitAutoEncoder(pl.LightningModule):
@@ -238,10 +238,10 @@ Here are some examples:
 ```python
 # 8 GPUs
 # no code changes needed
-trainer = Trainer(max_epochs=1, accelerator="cuda", devices=8)
+trainer = Trainer(max_epochs=1, accelerator="gpu", devices=8)
 
 # 256 GPUs
-trainer = Trainer(max_epochs=1, accelerator="cuda", devices=8, num_nodes=32)
+trainer = Trainer(max_epochs=1, accelerator="gpu", devices=8, num_nodes=32)
 ```
 
 <summary>Train on TPUs without code changes</summary>
@@ -342,7 +342,7 @@ class LitAutoEncoder(pl.LightningModule):
         opt_b.zero_grad()
 ```
 
-______________________________________________________________________
+---
 
 ## Advantages over unstructured PyTorch
 
@@ -355,7 +355,7 @@ ______________________________________________________________________
 - [Tested rigorously with every new PR](https://github.com/PyTorchLightning/pytorch-lightning/tree/master/tests). We test every combination of PyTorch and Python supported versions, every OS, multi GPUs and even TPUs.
 - Minimal running speed overhead (about 300 ms per epoch compared with pure PyTorch).
 
-______________________________________________________________________
+---
 
 ## Lightning Lite
 
@@ -367,7 +367,7 @@ In the Lighting 1.5 release, LightningLite now enables you to leverage all the c
 [blogpost](https://devblog.pytorchlightning.ai/scale-your-pytorch-code-with-lightninglite-d5692a303f00) and
 [docs](https://pytorch-lightning.readthedocs.io/en/stable/starter/lightning_lite.html) for more info.
 
-______________________________________________________________________
+---
 
 ## Examples
 
@@ -402,7 +402,7 @@ ______________________________________________________________________
 - [Logistic Regression](https://lightning-bolts.readthedocs.io/en/stable/deprecated/models/classic_ml.html#logistic-regression)
 - [Linear Regression](https://lightning-bolts.readthedocs.io/en/stable/deprecated/models/classic_ml.html#linear-regression)
 
-______________________________________________________________________
+---
 
 ## Community
 

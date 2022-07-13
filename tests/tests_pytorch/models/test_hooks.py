@@ -208,7 +208,7 @@ def test_transfer_batch_hook_ddp(tmpdir):
         limit_val_batches=0,
         max_epochs=1,
         strategy="ddp",
-        accelerator="cuda",
+        accelerator="gpu",
         devices=2,
         enable_progress_bar=False,
         enable_model_summary=False,
@@ -446,14 +446,14 @@ class HookedModel(BoringModel):
         {},
         # these precision plugins modify the optimization flow, so testing them explicitly
         pytest.param(
-            dict(accelerator="cuda", devices=1, precision=16, amp_backend="native"), marks=RunIf(min_cuda_gpus=1)
+            dict(accelerator="gpu", devices=1, precision=16, amp_backend="native"), marks=RunIf(min_cuda_gpus=1)
         ),
         pytest.param(
-            dict(accelerator="cuda", devices=1, precision=16, amp_backend="apex"),
+            dict(accelerator="gpu", devices=1, precision=16, amp_backend="apex"),
             marks=RunIf(min_cuda_gpus=1, amp_apex=True),
         ),
         pytest.param(
-            dict(accelerator="cuda", devices=1, precision=16, strategy="deepspeed"),
+            dict(accelerator="gpu", devices=1, precision=16, strategy="deepspeed"),
             marks=RunIf(min_cuda_gpus=1, standalone=True, deepspeed=True),
         ),
     ],

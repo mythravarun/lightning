@@ -15,10 +15,10 @@ from pytorch_lightning.utilities.enums import _AcceleratorType, GradClipAlgorith
 
 
 def test_consistency():
-    assert _AcceleratorType.TPU not in ("GPU", "CPU")
+    assert _AcceleratorType.TPU not in ("CUDA", "CPU")
     assert _AcceleratorType.TPU in ("TPU", "CPU")
     assert _AcceleratorType.TPU in ("tpu", "CPU")
-    assert _AcceleratorType.TPU not in {"GPU", "CPU"}
+    assert _AcceleratorType.TPU not in {"CUDA", "CPU"}
     # hash cannot be case invariant
     assert _AcceleratorType.TPU not in {"TPU", "CPU"}
     assert _AcceleratorType.TPU in {"tpu", "CPU"}

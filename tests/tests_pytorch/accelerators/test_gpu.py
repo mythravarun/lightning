@@ -50,7 +50,7 @@ def test_set_cuda_device(set_device_mock, tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=1,
         enable_checkpointing=False,
         enable_model_summary=False,

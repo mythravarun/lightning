@@ -357,7 +357,7 @@ def test_pytorch_profiler_trainer_ddp(tmpdir, pytorch_profiler):
         limit_val_batches=5,
         profiler=pytorch_profiler,
         strategy="ddp",
-        accelerator="cuda",
+        accelerator="gpu",
         devices=2,
         enable_progress_bar=False,
         enable_model_summary=False,
@@ -485,7 +485,7 @@ def test_pytorch_profiler_nested_emit_nvtx(tmpdir):
     trainer = Trainer(
         fast_dev_run=True,
         profiler=profiler,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=1,
         enable_progress_bar=False,
         enable_model_summary=False,

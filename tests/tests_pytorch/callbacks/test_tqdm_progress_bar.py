@@ -615,7 +615,7 @@ def test_progress_bar_max_val_check_interval_ddp(tmpdir, val_check_interval):
         num_sanity_val_steps=0,
         max_epochs=1,
         val_check_interval=val_check_interval,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=world_size,
         strategy="ddp",
         enable_progress_bar=True,

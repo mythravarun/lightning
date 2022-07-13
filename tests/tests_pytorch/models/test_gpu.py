@@ -48,7 +48,7 @@ def test_multi_gpu_none_backend(tmpdir):
         max_epochs=1,
         limit_train_batches=0.2,
         limit_val_batches=0.2,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=2,
     )
 
@@ -67,7 +67,7 @@ def test_single_gpu_model(tmpdir, devices):
         max_epochs=1,
         limit_train_batches=0.1,
         limit_val_batches=0.1,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=devices,
     )
 
@@ -110,7 +110,7 @@ def mocked_device_count_0(monkeypatch):
 )
 def test_root_gpu_property_0_raising(mocked_device_count_0, devices, expected_root_gpu, strategy):
     with pytest.raises(MisconfigurationException):
-        Trainer(accelerator="cuda", devices=devices, strategy=strategy)
+        Trainer(accelerator="gpu", devices=devices, strategy=strategy)
 
 
 @pytest.mark.parametrize(
@@ -208,7 +208,7 @@ def test_torchelastic_gpu_parsing(mocked_device_count, mocked_is_available, gpus
 
 @RunIf(min_cuda_gpus=1)
 def test_single_gpu_batch_parse():
-    trainer = Trainer(accelerator="cuda", devices=1)
+    trainer = Trainer(accelerator="gpu", devices=1)
 
     # non-transferrable types
     primitive_objects = [None, {}, [], 1.0, "x", [None, 2], {"x": (1, 2), "y": None}]

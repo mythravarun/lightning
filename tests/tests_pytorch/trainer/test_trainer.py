@@ -1113,10 +1113,10 @@ def test_invalid_gradient_clip_algo(tmpdir):
 @RunIf(min_cuda_gpus=1)
 def test_gpu_choice():
     num_gpus = torch.cuda.device_count()
-    Trainer(accelerator="cuda", devices=num_gpus, auto_select_gpus=True)
+    Trainer(accelerator="gpu", devices=num_gpus, auto_select_gpus=True)
 
     with pytest.raises(MisconfigurationException, match=r".*but your machine only has.*"):
-        Trainer(accelerator="cuda", devices=num_gpus + 1, auto_select_gpus=True)
+        Trainer(accelerator="gpu", devices=num_gpus + 1, auto_select_gpus=True)
 
 
 @pytest.mark.parametrize("limit_val_batches", [0.0, 1, 1.0, 0.5, 5])
@@ -1431,7 +1431,7 @@ def test_trainer_predict_cpu(tmpdir, datamodule, enable_progress_bar):
     ],
 )
 def test_trainer_predict_standalone(tmpdir, kwargs):
-    predict(tmpdir, accelerator="cuda", **kwargs)
+    predict(tmpdir, accelerator="gpu", **kwargs)
 
 
 @pytest.mark.parametrize(
@@ -1778,7 +1778,7 @@ def test_ddp_terminate_when_deadlock_is_detected(tmpdir):
         max_epochs=1,
         limit_train_batches=5,
         num_sanity_val_steps=0,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=2,
         strategy="ddp",
         enable_progress_bar=False,
@@ -1818,7 +1818,7 @@ def test_multiple_trainer_constant_memory_allocated(tmpdir):
     trainer_kwargs = dict(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="cuda",
+        accelerator="gpu",
         devices=1,
         strategy="ddp",
         enable_progress_bar=False,

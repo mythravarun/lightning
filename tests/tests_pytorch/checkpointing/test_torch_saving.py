@@ -56,7 +56,7 @@ def test_model_torch_save_ddp_cuda(tmpdir):
     model = BoringModel()
     num_epochs = 1
     trainer = Trainer(
-        default_root_dir=tmpdir, max_epochs=num_epochs, strategy="ddp_spawn", accelerator="cuda", devices=2
+        default_root_dir=tmpdir, max_epochs=num_epochs, strategy="ddp_spawn", accelerator="gpu", devices=2
     )
     temp_path = os.path.join(tmpdir, "temp.pt")
     trainer.fit(model)
