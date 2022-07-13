@@ -173,7 +173,7 @@ def test_memory_consumption_validation(tmpdir):
 
     torch.cuda.empty_cache()
     trainer = Trainer(
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         default_root_dir=tmpdir,
         fast_dev_run=2,

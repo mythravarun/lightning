@@ -38,7 +38,7 @@ class BoringModelGPU(BoringModel):
 def test_ddp_with_2_gpus():
     """Tests if device is set correctly when training and after teardown for DDPStrategy."""
     trainer = Trainer(
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         fast_dev_run=True,
@@ -79,7 +79,7 @@ def test_ddp_barrier_non_consecutive_device_ids(barrier_mock, tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         max_steps=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=gpus,
         strategy="ddp",
         enable_progress_bar=False,
@@ -155,7 +155,7 @@ def test_ddp_dont_configure_sync_batchnorm(trainer_fn):
     model = BoringModelGPU()
     model.layer = torch.nn.BatchNorm1d(10)
     ddp_strategy = DDPStrategy()
-    trainer = Trainer(accelerator="gpu", devices=1, strategy=ddp_strategy, sync_batchnorm=True)
+    trainer = Trainer(accelerator="cuda", devices=1, strategy=ddp_strategy, sync_batchnorm=True)
     trainer.state.fn = trainer_fn
     trainer.strategy.connect(model)
     trainer.lightning_module.trainer = trainer
@@ -180,7 +180,7 @@ def test_model_parameters_on_device_for_optimizer(strategy):
     trainer = Trainer(
         default_root_dir=os.getcwd(),
         fast_dev_run=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy=strategy,
     )

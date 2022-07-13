@@ -71,7 +71,7 @@ def test_multi_gpu_early_stop_dp(tmpdir):
         max_epochs=50,
         limit_train_batches=10,
         limit_val_batches=10,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         strategy="dp",
     )
@@ -88,7 +88,7 @@ def test_multi_gpu_model_dp(tmpdir):
         max_epochs=1,
         limit_train_batches=10,
         limit_val_batches=10,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         strategy="dp",
         enable_progress_bar=False,
@@ -164,7 +164,7 @@ def test_dp_raise_exception_with_batch_transfer_hooks(mock_is_available, mock_de
             batch = batch.to(device)
             return batch
 
-    trainer_options = dict(default_root_dir=tmpdir, max_steps=7, accelerator="gpu", devices=[0, 1], strategy="dp")
+    trainer_options = dict(default_root_dir=tmpdir, max_steps=7, accelerator="cuda", devices=[0, 1], strategy="dp")
 
     trainer = Trainer(**trainer_options)
     model = CustomModel()
@@ -206,7 +206,7 @@ def test_dp_training_step_dict(tmpdir):
     trainer = pl.Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="dp",
     )
@@ -229,7 +229,7 @@ def test_dp_batch_not_moved_to_device_explicitly(tmpdir):
     trainer = pl.Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="dp",
     )

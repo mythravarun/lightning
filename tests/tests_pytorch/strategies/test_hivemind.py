@@ -304,7 +304,7 @@ def test_scaler_updated_precision_16():
         strategy=HivemindStrategy(target_batch_size=1),
         fast_dev_run=True,
         precision=16,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
     with pytest.raises(SystemExit):

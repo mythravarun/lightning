@@ -34,7 +34,7 @@ from torch.utils.data import DataLoader, IterableDataset
 import pytorch_lightning
 import tests_pytorch.helpers.utils as tutils
 from pytorch_lightning import Callback, LightningDataModule, LightningModule, Trainer
-from pytorch_lightning.accelerators import CPUAccelerator, GPUAccelerator
+from pytorch_lightning.accelerators import CPUAccelerator, CUDAAccelerator
 from pytorch_lightning.callbacks import EarlyStopping, GradientAccumulationScheduler, ModelCheckpoint, Timer
 from pytorch_lightning.callbacks.fault_tolerance import _FaultToleranceCheckpoint
 from pytorch_lightning.callbacks.prediction_writer import BasePredictionWriter
@@ -1113,10 +1113,10 @@ def test_invalid_gradient_clip_algo(tmpdir):
 @RunIf(min_cuda_gpus=1)
 def test_gpu_choice():
     num_gpus = torch.cuda.device_count()
-    Trainer(accelerator="gpu", devices=num_gpus, auto_select_gpus=True)
+    Trainer(accelerator="cuda", devices=num_gpus, auto_select_gpus=True)
 
     with pytest.raises(MisconfigurationException, match=r".*but your machine only has.*"):
-        Trainer(accelerator="gpu", devices=num_gpus + 1, auto_select_gpus=True)
+        Trainer(accelerator="cuda", devices=num_gpus + 1, auto_select_gpus=True)
 
 
 @pytest.mark.parametrize("limit_val_batches", [0.0, 1, 1.0, 0.5, 5])
@@ -1431,7 +1431,7 @@ def test_trainer_predict_cpu(tmpdir, datamodule, enable_progress_bar):
     ],
 )
 def test_trainer_predict_standalone(tmpdir, kwargs):
-    predict(tmpdir, accelerator="gpu", **kwargs)
+    predict(tmpdir, accelerator="cuda", **kwargs)
 
 
 @pytest.mark.parametrize(
@@ -1778,7 +1778,7 @@ def test_ddp_terminate_when_deadlock_is_detected(tmpdir):
         max_epochs=1,
         limit_train_batches=5,
         num_sanity_val_steps=0,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         enable_progress_bar=False,
@@ -1818,7 +1818,7 @@ def test_multiple_trainer_constant_memory_allocated(tmpdir):
     trainer_kwargs = dict(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="ddp",
         enable_progress_bar=False,
@@ -1967,21 +1967,21 @@ def test_detect_anomaly_nan(tmpdir):
             {"strategy": None, "accelerator": "gpu", "devices": 1},
             SingleDeviceStrategy,
             "single_device",
-            GPUAccelerator,
+            CUDAAccelerator,
             1,
         ),
-        ({"strategy": "dp", "accelerator": "gpu", "devices": 1}, DataParallelStrategy, "dp", GPUAccelerator, 1),
-        ({"strategy": "ddp", "accelerator": "gpu", "devices": 1}, DDPStrategy, "ddp", GPUAccelerator, 1),
+        ({"strategy": "dp", "accelerator": "gpu", "devices": 1}, DataParallelStrategy, "dp", CUDAAccelerator, 1),
+        ({"strategy": "ddp", "accelerator": "gpu", "devices": 1}, DDPStrategy, "ddp", CUDAAccelerator, 1),
         (
             {"strategy": "ddp_spawn", "accelerator": "gpu", "devices": 1},
             DDPSpawnStrategy,
             "ddp_spawn",
-            GPUAccelerator,
+            CUDAAccelerator,
             1,
         ),
-        ({"strategy": None, "accelerator": "gpu", "devices": 2}, DDPSpawnStrategy, "ddp_spawn", GPUAccelerator, 2),
-        ({"strategy": "dp", "accelerator": "gpu", "devices": 2}, DataParallelStrategy, "dp", GPUAccelerator, 2),
-        ({"strategy": "ddp", "accelerator": "gpu", "devices": 2}, DDPStrategy, "ddp", GPUAccelerator, 2),
+        ({"strategy": None, "accelerator": "gpu", "devices": 2}, DDPSpawnStrategy, "ddp_spawn", CUDAAccelerator, 2),
+        ({"strategy": "dp", "accelerator": "gpu", "devices": 2}, DataParallelStrategy, "dp", CUDAAccelerator, 2),
+        ({"strategy": "ddp", "accelerator": "gpu", "devices": 2}, DDPStrategy, "ddp", CUDAAccelerator, 2),
         ({"strategy": "ddp", "accelerator": "cpu", "devices": 2}, DDPStrategy, "ddp", CPUAccelerator, 2),
         (
             {"strategy": "ddp_spawn", "accelerator": "cpu", "devices": 2},
@@ -2001,7 +2001,7 @@ def test_detect_anomaly_nan(tmpdir):
             {"strategy": "ddp_fully_sharded", "accelerator": "gpu", "devices": 1},
             DDPFullyShardedStrategy,
             "ddp_fully_sharded",
-            GPUAccelerator,
+            CUDAAccelerator,
             1,
         ),
         (
@@ -2015,65 +2015,65 @@ def test_detect_anomaly_nan(tmpdir):
             {"strategy": DDPSpawnStrategy(), "accelerator": "gpu", "devices": 2},
             DDPSpawnStrategy,
             "ddp_spawn",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         ({"strategy": DDPStrategy()}, DDPStrategy, "ddp", CPUAccelerator, 1),
-        ({"strategy": DDPStrategy(), "accelerator": "gpu", "devices": 2}, DDPStrategy, "ddp", GPUAccelerator, 2),
+        ({"strategy": DDPStrategy(), "accelerator": "gpu", "devices": 2}, DDPStrategy, "ddp", CUDAAccelerator, 2),
         (
             {"strategy": DataParallelStrategy(), "accelerator": "gpu", "devices": 2},
             DataParallelStrategy,
             "dp",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": DDPFullyShardedStrategy(), "accelerator": "gpu", "devices": 2},
             DDPFullyShardedStrategy,
             "ddp_fully_sharded",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": DDPSpawnShardedStrategy(), "accelerator": "gpu", "devices": 2},
             DDPSpawnShardedStrategy,
             "ddp_sharded_spawn",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": DDPShardedStrategy(), "accelerator": "gpu", "devices": 2},
             DDPShardedStrategy,
             "ddp_sharded",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": "ddp_spawn", "accelerator": "gpu", "devices": 2, "num_nodes": 2},
             DDPSpawnStrategy,
             "ddp_spawn",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": "ddp_fully_sharded", "accelerator": "gpu", "devices": 1, "num_nodes": 2},
             DDPFullyShardedStrategy,
             "ddp_fully_sharded",
-            GPUAccelerator,
+            CUDAAccelerator,
             1,
         ),
         (
             {"strategy": "ddp_sharded", "accelerator": "gpu", "devices": 2, "num_nodes": 2},
             DDPShardedStrategy,
             "ddp_sharded",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
         (
             {"strategy": "ddp_sharded_spawn", "accelerator": "gpu", "devices": 2, "num_nodes": 2},
             DDPSpawnShardedStrategy,
             "ddp_sharded_spawn",
-            GPUAccelerator,
+            CUDAAccelerator,
             2,
         ),
     ],

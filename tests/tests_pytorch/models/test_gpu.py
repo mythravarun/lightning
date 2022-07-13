@@ -23,7 +23,7 @@ import torch
 import tests_pytorch.helpers.pipelines as tpipes
 import tests_pytorch.helpers.utils as tutils
 from pytorch_lightning import Trainer
-from pytorch_lightning.accelerators import CPUAccelerator, GPUAccelerator
+from pytorch_lightning.accelerators import CPUAccelerator, CUDAAccelerator
 from pytorch_lightning.demos.boring_classes import BoringModel
 from pytorch_lightning.plugins.environments import TorchElasticEnvironment
 from pytorch_lightning.utilities import device_parser
@@ -48,7 +48,7 @@ def test_multi_gpu_none_backend(tmpdir):
         max_epochs=1,
         limit_train_batches=0.2,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
     )
 
@@ -67,7 +67,7 @@ def test_single_gpu_model(tmpdir, devices):
         max_epochs=1,
         limit_train_batches=0.1,
         limit_val_batches=0.1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=devices,
     )
 
@@ -110,7 +110,7 @@ def mocked_device_count_0(monkeypatch):
 )
 def test_root_gpu_property_0_raising(mocked_device_count_0, devices, expected_root_gpu, strategy):
     with pytest.raises(MisconfigurationException):
-        Trainer(accelerator="gpu", devices=devices, strategy=strategy)
+        Trainer(accelerator="cuda", devices=devices, strategy=strategy)
 
 
 @pytest.mark.parametrize(
@@ -196,7 +196,7 @@ def test_torchelastic_gpu_parsing(mocked_device_count, mocked_is_available, gpus
     assert isinstance(trainer._accelerator_connector.cluster_environment, TorchElasticEnvironment)
     # when use gpu
     if device_parser.parse_gpu_ids(gpus, include_cuda=True) is not None:
-        assert isinstance(trainer.accelerator, GPUAccelerator)
+        assert isinstance(trainer.accelerator, CUDAAccelerator)
         assert trainer.num_devices == len(gpus) if isinstance(gpus, list) else gpus
         assert trainer.device_ids == device_parser.parse_gpu_ids(gpus, include_cuda=True)
     # fall back to cpu
@@ -208,7 +208,7 @@ def test_torchelastic_gpu_parsing(mocked_device_count, mocked_is_available, gpus
 
 @RunIf(min_cuda_gpus=1)
 def test_single_gpu_batch_parse():
-    trainer = Trainer(accelerator="gpu", devices=1)
+    trainer = Trainer(accelerator="cuda", devices=1)
 
     # non-transferrable types
     primitive_objects = [None, {}, [], 1.0, "x", [None, 2], {"x": (1, 2), "y": None}]

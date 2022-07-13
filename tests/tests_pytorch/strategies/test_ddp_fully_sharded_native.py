@@ -44,7 +44,7 @@ def test_fsdp_with_sharded_amp(device_count_mock, mock_cuda_available, tmpdir):
             default_root_dir=tmpdir,
             fast_dev_run=True,
             strategy="fsdp_native",
-            accelerator="gpu",
+            accelerator="cuda",
             devices=1,
             precision=16,
         )
@@ -109,7 +109,7 @@ def test_fully_sharded_native_strategy_sync_batchnorm(tmpdir):
     model = TestFSDPModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="fsdp_native",
         precision=16,
@@ -125,7 +125,7 @@ def test_fully_sharded_native_strategy_checkpoint(tmpdir):
 
     model = TestFSDPModel()
     trainer = Trainer(
-        default_root_dir=tmpdir, accelerator="gpu", devices=1, strategy="fsdp_native", precision=16, max_epochs=1
+        default_root_dir=tmpdir, accelerator="cuda", devices=1, strategy="fsdp_native", precision=16, max_epochs=1
     )
     _run_multiple_stages(trainer, model, os.path.join(tmpdir, "last.ckpt"))
 
@@ -138,7 +138,7 @@ def test_fully_sharded_native_strategy_checkpoint_multi_gpus(tmpdir):
     ck = ModelCheckpoint(save_last=True)
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="fsdp_native",
         precision=16,

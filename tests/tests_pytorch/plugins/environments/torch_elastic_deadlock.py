@@ -27,7 +27,7 @@ if os.getenv("PL_RUN_STANDALONE_TESTS", "0") == "1" and os.getenv("PL_RECONCILE_
         max_epochs=1,
         limit_train_batches=5,
         num_sanity_val_steps=0,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
     )

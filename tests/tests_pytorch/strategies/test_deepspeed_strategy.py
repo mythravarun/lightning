@@ -191,7 +191,7 @@ def test_deepspeed_precision_choice(_, amp_backend, precision, tmpdir):
     trainer = Trainer(
         fast_dev_run=True,
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         strategy="deepspeed",
         amp_backend=amp_backend,
         precision=precision,
@@ -242,7 +242,7 @@ def test_warn_deepspeed_ignored(tmpdir):
         fast_dev_run=True,
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         precision=16,
         track_grad_norm=2,
@@ -289,7 +289,7 @@ def test_deepspeed_auto_batch_size_config_select(mock_deepspeed_distributed, moc
         default_root_dir=tmpdir,
         fast_dev_run=True,
         callbacks=ck,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy=DeepSpeedStrategy(logging_batch_size_per_gpu=value, zero_optimization=False),
     )
@@ -320,7 +320,7 @@ def test_deepspeed_run_configure_optimizers(tmpdir):
     trainer = Trainer(
         strategy=DeepSpeedStrategy(),  # disable ZeRO so our optimizers are not wrapped
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -355,7 +355,7 @@ def test_deepspeed_config(tmpdir, deepspeed_zero_config):
     trainer = Trainer(
         strategy=DeepSpeedStrategy(config=deepspeed_zero_config),
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         log_every_n_steps=1,
         limit_train_batches=4,
@@ -396,7 +396,7 @@ def test_deepspeed_custom_precision_params(tmpdir):
         default_root_dir=tmpdir,
         strategy=ds,
         precision=16,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         callbacks=[TestCB()],
         enable_progress_bar=False,
@@ -439,7 +439,7 @@ def test_deepspeed_custom_activation_checkpointing_params_forwarded(tmpdir):
         fast_dev_run=1,
         strategy=ds,
         precision=16,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         enable_progress_bar=False,
         enable_model_summary=False,
@@ -472,7 +472,7 @@ def test_deepspeed_assert_config_zero_offload_disabled(tmpdir, deepspeed_zero_co
         max_epochs=1,
         strategy=DeepSpeedStrategy(config=deepspeed_zero_config),
         precision=16,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         callbacks=[TestCallback()],
     )
@@ -488,7 +488,7 @@ def test_deepspeed_multigpu(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -508,7 +508,7 @@ def test_deepspeed_fp32_works(tmpdir):
     model = BoringModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="deepspeed_stage_3",
         fast_dev_run=True,
@@ -525,7 +525,7 @@ def test_deepspeed_stage_3_save_warning(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -557,7 +557,7 @@ def test_deepspeed_multigpu_single_file(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -573,7 +573,7 @@ def test_deepspeed_multigpu_single_file(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3, load_full_weights=True),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -675,7 +675,7 @@ def test_deepspeed_multigpu_stage_3(tmpdir, deepspeed_config):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -696,7 +696,7 @@ def test_deepspeed_multigpu_stage_3_manual_optimization(tmpdir, deepspeed_config
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -723,7 +723,7 @@ def test_deepspeed_multigpu_stage_3_checkpointing(tmpdir, automatic_optimization
         default_root_dir=tmpdir,
         max_epochs=10,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         precision=16,
         accumulate_grad_batches=accumulate_grad_batches,
@@ -745,7 +745,7 @@ def test_deepspeed_multigpu_stage_3_checkpointing(tmpdir, automatic_optimization
         model = ManualModelParallelClassificationModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy=DeepSpeedStrategy(stage=3),
         precision=16,
@@ -777,7 +777,7 @@ def test_deepspeed_multigpu_stage_3_warns_resume_training(tmpdir):
         default_root_dir=tmpdir,
         fast_dev_run=True,
         strategy=DeepSpeedStrategy(stage=3, load_full_weights=True),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         precision=16,
         enable_progress_bar=False,
@@ -806,7 +806,7 @@ def test_deepspeed_multigpu_stage_3_resume_training(tmpdir):
         limit_val_batches=2,
         limit_test_batches=2,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         precision=16,
         callbacks=[ck],
@@ -844,7 +844,7 @@ def test_deepspeed_multigpu_stage_3_resume_training(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         max_epochs=2,
         limit_train_batches=1,
@@ -882,7 +882,7 @@ def test_deepspeed_multigpu_stage_2_accumulated_grad_batches(tmpdir, offload_opt
         # we step the optimizers on the last batch but DeepSpeed keeps the accumulation for the next epoch
         max_epochs=1,
         strategy=DeepSpeedStrategy(stage=2, offload_optimizer=offload_optimizer),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         limit_train_batches=5,
         limit_val_batches=2,
@@ -904,7 +904,7 @@ def test_deepspeed_multigpu_test(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -940,7 +940,7 @@ def test_deepspeed_multigpu_partial_partition_parameters(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -967,7 +967,7 @@ def test_deepspeed_multigpu_test_rnn(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -1031,7 +1031,7 @@ def test_deepspeed_multigpu_no_schedulers(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -1053,7 +1053,7 @@ def test_deepspeed_skip_backward_raises(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         precision=16,
@@ -1092,7 +1092,7 @@ def test_deepspeed_setup_train_dataloader(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(logging_level=logging.INFO),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         fast_dev_run=True,
         enable_progress_bar=False,
@@ -1128,7 +1128,7 @@ def test_scheduler_step_count(mock_step, max_epoch, limit_train_batches, interva
         limit_train_batches=limit_train_batches,
         limit_val_batches=0,
         max_epochs=max_epoch,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="deepspeed",
         enable_progress_bar=False,
@@ -1156,7 +1156,7 @@ def test_deepspeed_configure_gradient_clipping(tmpdir):
     model = TestModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="deepspeed",
         fast_dev_run=True,
@@ -1173,7 +1173,7 @@ def test_deepspeed_gradient_clip_by_value(tmpdir):
     model = BoringModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="deepspeed",
         gradient_clip_algorithm="value",
@@ -1190,7 +1190,7 @@ def test_different_accumulate_grad_batches_fails(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         accumulate_grad_batches={1: 2},
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="deepspeed",
         enable_progress_bar=False,
@@ -1234,7 +1234,7 @@ def test_specific_gpu_device_id(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[1],
         strategy="deepspeed",
         callbacks=TestCallback(),
@@ -1253,7 +1253,7 @@ def test_deepspeed_with_meta_device(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,
@@ -1278,7 +1278,7 @@ def test_deepspeed_multi_save_same_filepath(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy="deepspeed",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         callbacks=[ModelCheckpoint(filename="{epoch}_{step}_{grank}", save_top_k=1)],
         limit_train_batches=1,
@@ -1307,7 +1307,7 @@ def test_deepspeed_with_bfloat16_precision(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy="deepspeed_stage_3",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision="bf16",
@@ -1352,7 +1352,7 @@ def test_deepspeed_configure_optimizer_device_set(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy=DeepSpeedStrategy(),
     )

@@ -398,7 +398,7 @@ def test_running_test_pretrained_model_distrib_dp(tmpdir):
         limit_val_batches=5,
         callbacks=[checkpoint],
         logger=logger,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         strategy="dp",
         default_root_dir=tmpdir,
@@ -445,7 +445,7 @@ def test_running_test_pretrained_model_distrib_ddp_spawn(tmpdir):
         limit_val_batches=2,
         callbacks=[checkpoint],
         logger=logger,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         strategy="ddp_spawn",
         default_root_dir=tmpdir,
@@ -565,7 +565,7 @@ def test_dp_resume(tmpdir):
     model = CustomClassificationModelDP(lr=0.1)
     dm = ClassifDataModule()
 
-    trainer_options = dict(max_epochs=1, accelerator="gpu", devices=2, strategy="dp", default_root_dir=tmpdir)
+    trainer_options = dict(max_epochs=1, accelerator="cuda", devices=2, strategy="dp", default_root_dir=tmpdir)
 
     # get logger
     logger = tutils.get_default_logger(tmpdir)

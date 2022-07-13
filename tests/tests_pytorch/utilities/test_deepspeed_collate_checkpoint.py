@@ -29,7 +29,7 @@ def test_deepspeed_collate_checkpoint(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy=DeepSpeedStrategy(stage=3),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=True,
         precision=16,

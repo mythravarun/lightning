@@ -169,7 +169,7 @@ def test_pruning_callback_ddp(tmpdir, parameters_to_prune, use_global_unstructur
         parameters_to_prune=parameters_to_prune,
         use_global_unstructured=use_global_unstructured,
         strategy="ddp",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
     )
 
@@ -177,7 +177,7 @@ def test_pruning_callback_ddp(tmpdir, parameters_to_prune, use_global_unstructur
 @RunIf(min_cuda_gpus=2, skip_windows=True)
 def test_pruning_callback_ddp_spawn(tmpdir):
     train_with_pruning_callback(
-        tmpdir, use_global_unstructured=True, strategy="ddp_spawn", accelerator="gpu", devices=2
+        tmpdir, use_global_unstructured=True, strategy="ddp_spawn", accelerator="cuda", devices=2
     )
 
 

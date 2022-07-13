@@ -65,7 +65,7 @@ def test_amp_apex_ddp(mocked_device_count, mocked_is_available, strategy, device
         fast_dev_run=True,
         precision=16,
         amp_backend=amp,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=devices,
         strategy=strategy,
         plugins=plugin,
@@ -147,7 +147,7 @@ def test_amp_gradient_unscale(tmpdir, accum: int):
         limit_val_batches=0,
         amp_backend="native",
         strategy="ddp_spawn",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         precision=16,
         track_grad_norm=2,
@@ -189,7 +189,7 @@ def test_amp_skip_optimizer(tmpdir):
             ]
 
     trainer = Trainer(
-        default_root_dir=tmpdir, accelerator="gpu", devices=1, fast_dev_run=1, amp_backend="native", precision=16
+        default_root_dir=tmpdir, accelerator="cuda", devices=1, fast_dev_run=1, amp_backend="native", precision=16
     )
     model = CustomBoringModel()
     trainer.fit(model)
@@ -209,7 +209,7 @@ def test_amp_apex_ddp_fit(amp_level, tmpdir):
         fast_dev_run=True,
         precision=16,
         amp_backend="apex",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         plugins=ApexMixedPrecisionPlugin(amp_level=amp_level),
@@ -230,7 +230,7 @@ def test_amp_apex_ddp_spawn_fit(amp_level, tmpdir):
         fast_dev_run=True,
         precision=16,
         amp_backend="apex",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp_spawn",
         plugins=ApexMixedPrecisionPlugin(amp_level=amp_level),
@@ -276,7 +276,7 @@ def test_precision_selection_raises(monkeypatch):
         MisconfigurationException, match="Sharded plugins are not supported with apex"
     ):
         with mock.patch("torch.cuda.is_available", return_value=True):
-            Trainer(amp_backend="apex", precision=16, accelerator="gpu", devices=1, strategy="ddp_fully_sharded")
+            Trainer(amp_backend="apex", precision=16, accelerator="cuda", devices=1, strategy="ddp_fully_sharded")
 
     import pytorch_lightning.plugins.precision.apex_amp as apex
 
@@ -284,4 +284,4 @@ def test_precision_selection_raises(monkeypatch):
     with mock.patch("torch.cuda.device_count", return_value=1), mock.patch(
         "torch.cuda.is_available", return_value=True
     ), pytest.raises(MisconfigurationException, match="asked for Apex AMP but you have not installed it"):
-        Trainer(amp_backend="apex", precision=16, accelerator="gpu", devices=1)
+        Trainer(amp_backend="apex", precision=16, accelerator="cuda", devices=1)

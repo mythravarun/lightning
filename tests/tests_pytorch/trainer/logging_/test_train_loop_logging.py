@@ -468,7 +468,7 @@ def test_logging_sync_dist_true_ddp(tmpdir):
         limit_val_batches=1,
         max_epochs=2,
         strategy="ddp",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         profiler="pytorch",
         enable_progress_bar=False,
@@ -733,7 +733,7 @@ def test_move_metrics_to_cpu(tmpdir):
         amp_backend="native",
         precision=16,
         move_metrics_to_cpu=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
     trainer.fit(TestModel())

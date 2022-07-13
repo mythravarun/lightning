@@ -52,5 +52,5 @@ def test_passing_env_variables_devices(cuda_available_mock, device_count_mock):
     """Testing overwriting trainer arguments."""
     trainer = Trainer()
     assert trainer.num_devices == 2
-    trainer = Trainer(accelerator="gpu", devices=1)
+    trainer = Trainer(accelerator="cuda", devices=1)
     assert trainer.num_devices == 1

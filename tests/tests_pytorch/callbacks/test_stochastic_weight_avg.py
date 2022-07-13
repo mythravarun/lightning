@@ -149,12 +149,12 @@ def train_with_swa(
 
 @RunIf(min_cuda_gpus=2, standalone=True)
 def test_swa_callback_ddp(tmpdir):
-    train_with_swa(tmpdir, strategy="ddp", accelerator="gpu", devices=2)
+    train_with_swa(tmpdir, strategy="ddp", accelerator="cuda", devices=2)
 
 
 @RunIf(min_cuda_gpus=2)
 def test_swa_callback_ddp_spawn(tmpdir):
-    train_with_swa(tmpdir, strategy="ddp_spawn", accelerator="gpu", devices=2)
+    train_with_swa(tmpdir, strategy="ddp_spawn", accelerator="cuda", devices=2)
 
 
 @RunIf(skip_windows=True)

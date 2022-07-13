@@ -581,7 +581,7 @@ def test_optimizer_state_on_device(tmpdir):
     model = TestModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         fast_dev_run=True,

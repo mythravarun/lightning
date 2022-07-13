@@ -145,7 +145,7 @@ def test_horovod_multi_gpu(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
     )
@@ -161,7 +161,7 @@ def test_horovod_multi_gpu_accumulate_grad_batches(tmpdir):
         limit_train_batches=4,
         limit_val_batches=0,
         accumulate_grad_batches=2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
     )
@@ -196,7 +196,7 @@ def test_horovod_multi_gpu_grad_by_value(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
     )
@@ -217,7 +217,7 @@ def test_horovod_apex(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
         amp_backend="apex",
@@ -236,7 +236,7 @@ def test_horovod_amp(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
         amp_backend="native",
@@ -255,7 +255,7 @@ def test_horovod_gather(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
     )
@@ -281,7 +281,7 @@ def test_horovod_transfer_batch_to_gpu(tmpdir):
         max_epochs=1,
         limit_train_batches=0.4,
         limit_val_batches=0.2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="horovod",
     )

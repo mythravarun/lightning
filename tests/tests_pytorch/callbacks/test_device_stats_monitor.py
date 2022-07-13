@@ -51,7 +51,7 @@ def test_device_stats_gpu_from_torch(tmpdir):
         max_epochs=2,
         limit_train_batches=7,
         log_every_n_steps=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         callbacks=[device_stats],
         logger=DebugLogger(tmpdir),

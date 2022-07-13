@@ -82,7 +82,7 @@ def test_submodules_multi_gpu_dp(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy="dp",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         callbacks=[DeviceAssertCallback()],
         max_steps=1,
@@ -96,7 +96,7 @@ def test_submodules_multi_gpu_ddp_spawn(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy="ddp_spawn",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         callbacks=[DeviceAssertCallback()],
         max_steps=1,

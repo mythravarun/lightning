@@ -140,7 +140,7 @@ def plugin_parity_test(
     trainer = Trainer(
         fast_dev_run=True,
         max_epochs=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=gpus,
         precision=precision,
         strategy="ddp_spawn",
@@ -156,7 +156,7 @@ def plugin_parity_test(
     trainer = Trainer(
         fast_dev_run=True,
         max_epochs=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=gpus,
         precision=precision,
         strategy="ddp_sharded_spawn",

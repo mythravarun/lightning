@@ -341,7 +341,7 @@ def test_epoch_results_cache_dp(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         strategy="dp",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         limit_train_batches=2,
         limit_val_batches=2,

@@ -110,7 +110,7 @@ def test_amp_gpus(tmpdir, strategy, precision, devices):
     trainer = Trainer(
         default_root_dir=tmpdir,
         max_epochs=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=devices,
         strategy=strategy,
         precision=precision,
@@ -153,7 +153,7 @@ def test_amp_gpu_ddp_slurm_managed(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         max_epochs=1,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0],
         strategy="ddp_spawn",
         precision=16,
@@ -209,7 +209,7 @@ def test_amp_with_apex(bwd_mock, tmpdir):
     model.training_epoch_end = None
 
     trainer = Trainer(
-        default_root_dir=tmpdir, max_steps=5, precision=16, amp_backend="apex", accelerator="gpu", devices=1
+        default_root_dir=tmpdir, max_steps=5, precision=16, amp_backend="apex", accelerator="cuda", devices=1
     )
     assert str(trainer.amp_backend) == "AMPType.APEX"
     trainer.fit(model)

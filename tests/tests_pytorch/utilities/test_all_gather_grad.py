@@ -103,7 +103,7 @@ def test_all_gather_collection(tmpdir):
         max_epochs=1,
         log_every_n_steps=1,
         accumulate_grad_batches=2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         enable_progress_bar=False,
@@ -134,7 +134,7 @@ def test_all_gather_sync_grads(tmpdir):
     trainer = Trainer(
         default_root_dir=tmpdir,
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="ddp",
         enable_progress_bar=False,

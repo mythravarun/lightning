@@ -33,9 +33,9 @@ else:
 @pytest.mark.parametrize(
     "trainer_kwargs",
     (
-        pytest.param(dict(accelerator="gpu", devices=1), marks=RunIf(min_cuda_gpus=1)),
-        pytest.param(dict(strategy="dp", accelerator="gpu", devices=2), marks=RunIf(min_cuda_gpus=2)),
-        pytest.param(dict(strategy="ddp_spawn", accelerator="gpu", devices=2), marks=RunIf(min_cuda_gpus=2)),
+        pytest.param(dict(accelerator="cuda", devices=1), marks=RunIf(min_cuda_gpus=1)),
+        pytest.param(dict(strategy="dp", accelerator="cuda", devices=2), marks=RunIf(min_cuda_gpus=2)),
+        pytest.param(dict(strategy="ddp_spawn", accelerator="cuda", devices=2), marks=RunIf(min_cuda_gpus=2)),
         pytest.param(dict(accelerator="mps", devices=1), marks=RunIf(mps=True)),
     ),
 )

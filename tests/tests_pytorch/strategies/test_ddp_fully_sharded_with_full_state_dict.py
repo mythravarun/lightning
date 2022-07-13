@@ -35,7 +35,7 @@ def test_invalid_on_cpu(tmpdir):
 def test_fsdp_with_sharded_amp(device_count_mock, mock_cuda_available, tmpdir):
     """Test to ensure that plugin native amp plugin is correctly chosen when using sharded."""
     trainer = Trainer(
-        default_root_dir=tmpdir, fast_dev_run=True, strategy="fsdp", accelerator="gpu", devices=1, precision=16
+        default_root_dir=tmpdir, fast_dev_run=True, strategy="fsdp", accelerator="cuda", devices=1, precision=16
     )
     assert isinstance(trainer.strategy, DDPFullyShardedStrategy)
     assert isinstance(trainer.strategy.precision_plugin, FullyShardedNativeMixedPrecisionPlugin)
@@ -103,7 +103,7 @@ def test_fully_sharded_strategy_checkpoint(tmpdir):
     model = TestFSDPModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         strategy="fsdp",
         precision=16,
@@ -122,7 +122,7 @@ def test_fully_sharded_strategy_checkpoint_multi_gpus(tmpdir):
     ck = ModelCheckpoint(save_last=True)
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         strategy="fsdp",
         precision=16,
@@ -170,7 +170,7 @@ def test_fsdp_gradient_clipping_raises(tmpdir):
         default_root_dir=tmpdir,
         strategy="fsdp",
         fast_dev_run=True,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         precision=16,
         gradient_clip_val=1,

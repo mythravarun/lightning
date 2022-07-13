@@ -24,7 +24,7 @@ def test_ddp_sharded_precision_16_clip_gradients(mock_oss_clip_grad_norm, clip_v
     model = BoringModel()
     trainer = Trainer(
         strategy="ddp_sharded",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
         precision=16,
         fast_dev_run=True,
@@ -53,7 +53,7 @@ def test_sharded_ddp_choice(tmpdir, strategy, expected):
 )
 def test_ddp_choice_sharded_amp(tmpdir, strategy, expected):
     """Test to ensure that plugin native amp plugin is correctly chosen when using sharded."""
-    trainer = Trainer(fast_dev_run=True, accelerator="gpu", devices=1, precision=16, strategy=strategy)
+    trainer = Trainer(fast_dev_run=True, accelerator="cuda", devices=1, precision=16, strategy=strategy)
     assert isinstance(trainer.strategy, expected)
 
 
@@ -78,7 +78,7 @@ def test_ddp_sharded_strategy_checkpoint_cpu(tmpdir):
 def test_ddp_sharded_strategy_checkpoint_multi_gpu(tmpdir):
     """Test to ensure that checkpoint is saved correctly when using multiple GPUs."""
     model = BoringModel()
-    trainer = Trainer(accelerator="gpu", devices=2, strategy="ddp_sharded_spawn", fast_dev_run=True)
+    trainer = Trainer(accelerator="cuda", devices=2, strategy="ddp_sharded_spawn", fast_dev_run=True)
 
     trainer.fit(model)
 
@@ -95,7 +95,7 @@ def test_ddp_sharded_strategy_checkpoint_multi_gpu(tmpdir):
 def test_ddp_sharded_strategy_finetune(tmpdir):
     """Test to ensure that we can save and restart training (simulate fine-tuning)"""
     model = BoringModel()
-    trainer = Trainer(accelerator="gpu", devices=2, strategy="ddp_sharded_spawn", fast_dev_run=True)
+    trainer = Trainer(accelerator="cuda", devices=2, strategy="ddp_sharded_spawn", fast_dev_run=True)
     trainer.fit(model)
 
     checkpoint_path = os.path.join(tmpdir, "model.pt")
@@ -148,7 +148,7 @@ def test_ddp_sharded_strategy_fit_ckpt_path_downsize_gpus(tmpdir):
 def test_ddp_sharded_strategy_fit_ckpt_path_gpu_to_cpu(tmpdir):
     """Test to ensure that resuming from checkpoint works when going from GPUs- > CPU."""
     model = BoringModel()
-    trainer = Trainer(strategy="ddp_sharded_spawn", accelerator="gpu", devices=1, fast_dev_run=True)
+    trainer = Trainer(strategy="ddp_sharded_spawn", accelerator="cuda", devices=1, fast_dev_run=True)
 
     trainer.fit(model)
 
@@ -167,7 +167,7 @@ def test_ddp_sharded_strategy_fit_ckpt_path_gpu_to_cpu(tmpdir):
     "trainer_kwargs",
     (
         dict(accelerator="cpu", devices=2),
-        pytest.param(dict(accelerator="gpu", devices=2), marks=RunIf(min_cuda_gpus=2)),
+        pytest.param(dict(accelerator="cuda", devices=2), marks=RunIf(min_cuda_gpus=2)),
     ),
 )
 def test_ddp_sharded_strategy_test_multigpu(tmpdir, trainer_kwargs):
@@ -208,7 +208,7 @@ def test_ddp_sharded_strategy_manual_optimization_spawn(tmpdir):
         default_root_dir=tmpdir,
         strategy="ddp_sharded_spawn",
         fast_dev_run=2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         enable_progress_bar=False,
         enable_model_summary=False,
@@ -223,7 +223,7 @@ def test_ddp_sharded_strategy_manual_optimization(tmpdir):
         default_root_dir=tmpdir,
         strategy="ddp_sharded",
         fast_dev_run=2,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         enable_progress_bar=False,
         enable_model_summary=False,

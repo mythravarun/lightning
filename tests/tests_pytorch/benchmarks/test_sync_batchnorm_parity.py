@@ -59,7 +59,7 @@ def test_sync_batchnorm_parity(tmpdir):
     model = SyncBNModule(batch_size=4)
     trainer = Trainer(
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         strategy="ddp",
         devices=2,
         max_steps=3,

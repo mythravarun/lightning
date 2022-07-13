@@ -128,7 +128,7 @@ def test_num_stepping_batches_gpu(trainer_kwargs, estimated_steps, monkeypatch):
     """Test stepping batches with GPU strategies."""
     monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
     monkeypatch.setattr(torch.cuda, "device_count", lambda: 7)
-    trainer = Trainer(max_epochs=1, devices=7, accelerator="gpu", **trainer_kwargs)
+    trainer = Trainer(max_epochs=1, devices=7, accelerator="cuda", **trainer_kwargs)
     model = BoringModel()
     trainer._data_connector.attach_data(model)
     trainer.strategy.connect(model)

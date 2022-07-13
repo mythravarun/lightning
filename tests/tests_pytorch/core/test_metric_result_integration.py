@@ -495,7 +495,7 @@ def test_result_collection_reload_1_gpu_ddp(tmpdir, accelerator):
 @RunIf(min_cuda_gpus=2, standalone=True)
 @mock.patch.dict(os.environ, {"PL_FAULT_TOLERANT_TRAINING": "1"})
 def test_result_collection_reload_2_gpus(tmpdir):
-    result_collection_reload(default_root_dir=tmpdir, strategy="ddp", accelerator="gpu", devices=2)
+    result_collection_reload(default_root_dir=tmpdir, strategy="ddp", accelerator="cuda", devices=2)
 
 
 def test_metric_collections(tmpdir):

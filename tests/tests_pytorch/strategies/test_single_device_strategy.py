@@ -42,7 +42,7 @@ def test_single_gpu():
 
     Cannot run this test on MPS due to shared memory not allowing dedicated measurements of GPU memory utilization.
     """
-    trainer = Trainer(accelerator="gpu", devices=1, fast_dev_run=True)
+    trainer = Trainer(accelerator="cuda", devices=1, fast_dev_run=True)
     # assert training strategy attributes for device setting
     assert isinstance(trainer.strategy, SingleDeviceStrategy)
     assert trainer.strategy.root_device == torch.device("cuda:0")

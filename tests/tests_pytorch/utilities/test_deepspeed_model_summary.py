@@ -42,7 +42,7 @@ def test_deepspeed_summary(tmpdir):
     trainer = Trainer(
         strategy=DeepSpeedStrategy(stage=3),
         default_root_dir=tmpdir,
-        accelerator="gpu",
+        accelerator="cuda",
         fast_dev_run=True,
         devices=2,
         precision=16,

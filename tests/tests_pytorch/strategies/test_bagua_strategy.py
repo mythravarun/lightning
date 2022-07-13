@@ -39,7 +39,7 @@ def test_bagua_default(tmpdir):
         default_root_dir=tmpdir,
         fast_dev_run=1,
         strategy="bagua",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
     assert isinstance(trainer.strategy, BaguaStrategy)
@@ -53,7 +53,7 @@ def test_async_algorithm(tmpdir):
         default_root_dir=tmpdir,
         fast_dev_run=1,
         strategy=bagua_strategy,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         enable_progress_bar=False,
         enable_model_summary=False,
@@ -75,7 +75,7 @@ def test_configuration(algorithm, tmpdir):
         default_root_dir=tmpdir,
         fast_dev_run=1,
         strategy=bagua_strategy,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
     trainer.state.fn = TrainerFn.FITTING
@@ -100,7 +100,7 @@ def test_qadam_configuration(tmpdir):
         default_root_dir=tmpdir,
         fast_dev_run=1,
         strategy=bagua_strategy,
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
     trainer.state.fn = TrainerFn.FITTING
@@ -120,4 +120,4 @@ def test_bagua_not_available(monkeypatch):
     monkeypatch.setattr(imports, "_BAGUA_AVAILABLE", False)
     with mock.patch("torch.cuda.device_count", return_value=1):
         with pytest.raises(MisconfigurationException, match="you must have `Bagua` installed"):
-            Trainer(strategy="bagua", accelerator="gpu", devices=1)
+            Trainer(strategy="bagua", accelerator="cuda", devices=1)

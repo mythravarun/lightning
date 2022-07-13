@@ -670,7 +670,7 @@ def test_auto_add_worker_init_fn_distributed(tmpdir, monkeypatch):
 
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=num_workers)
     seed_everything(0, workers=True)
-    trainer = Trainer(default_root_dir=tmpdir, max_epochs=1, accelerator="gpu", devices=2, strategy="ddp_spawn")
+    trainer = Trainer(default_root_dir=tmpdir, max_epochs=1, accelerator="cuda", devices=2, strategy="ddp_spawn")
     model = MultiProcessModel()
     model.val_dataloader = None
     trainer.fit(model, train_dataloaders=dataloader)
@@ -792,7 +792,7 @@ def test_dataloader_distributed_sampler(tmpdir):
     seed_everything(123)
     model = BoringModel()
     trainer = Trainer(
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         num_nodes=1,
         strategy="ddp_spawn",
@@ -818,7 +818,7 @@ def test_dataloader_distributed_sampler_already_attached(tmpdir):
     seed_everything(123)
     model = ModelWithDataLoaderDistributedSampler()
     trainer = Trainer(
-        accelerator="gpu",
+        accelerator="cuda",
         devices=[0, 1],
         num_nodes=1,
         strategy="ddp_spawn",

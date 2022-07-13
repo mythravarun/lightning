@@ -87,7 +87,7 @@ def test_all_rank_logging_ddp_spawn(tmpdir):
     model.training_epoch_end = None
     trainer = Trainer(
         strategy="ddp_spawn",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         default_root_dir=tmpdir,
         limit_train_batches=1,

@@ -131,7 +131,7 @@ def test_auto_scale_batch_size_trainer_arg(tmpdir, scale_arg):
     before_batch_size = 2
     model = BatchSizeModel(batch_size=before_batch_size)
     trainer = Trainer(
-        default_root_dir=tmpdir, max_epochs=1, auto_scale_batch_size=scale_arg, accelerator="gpu", devices=1
+        default_root_dir=tmpdir, max_epochs=1, auto_scale_batch_size=scale_arg, accelerator="cuda", devices=1
     )
     trainer.tune(model)
     after_batch_size = model.batch_size
@@ -174,7 +174,7 @@ def test_auto_scale_batch_size_set_model_attribute(tmpdir, use_hparams):
     model_class = HparamsBatchSizeModel if use_hparams else BatchSizeModel
     model = model_class(**hparams)
 
-    trainer = Trainer(default_root_dir=tmpdir, max_epochs=1, auto_scale_batch_size=True, accelerator="gpu", devices=1)
+    trainer = Trainer(default_root_dir=tmpdir, max_epochs=1, auto_scale_batch_size=True, accelerator="cuda", devices=1)
     trainer.tune(model, datamodule_fit)
     after_batch_size = model.hparams.batch_size if use_hparams else model.batch_size
     assert trainer.datamodule == datamodule_fit
@@ -245,7 +245,7 @@ def test_auto_scale_batch_size_with_amp(tmpdir):
     before_batch_size = 2
     model = BatchSizeModel(batch_size=before_batch_size)
     trainer = Trainer(
-        default_root_dir=tmpdir, max_steps=1, auto_scale_batch_size=True, accelerator="gpu", devices=1, precision=16
+        default_root_dir=tmpdir, max_steps=1, auto_scale_batch_size=True, accelerator="cuda", devices=1, precision=16
     )
     trainer.tune(model)
     after_batch_size = model.batch_size

@@ -156,7 +156,7 @@ def test_double_precision_ddp(tmpdir):
         max_epochs=1,
         default_root_dir=tmpdir,
         strategy="ddp_spawn",
-        accelerator="gpu",
+        accelerator="cuda",
         devices=2,
         fast_dev_run=2,
         precision=64,
