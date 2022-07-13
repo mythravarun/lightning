@@ -17,17 +17,14 @@ from pytorch_lightning.utilities.warnings import rank_zero_deprecation
 
 
 class GPUAccelerator(CUDAAccelerator):
+    """Accelerator for NVIDIA GPU devices.
+
+    .. deprecated:: 1.9
+        Please use the CUDAAccelerator instead.
+    """
+
     def __init__(self, root_device: torch.device, **kwargs):
         rank_zero_deprecation(
             "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9. Please use the CUDAAccelerator instead!"
         )
         super().__init__(root_device=root_device, **kwargs)
-
-
-GPUAccelerator.__doc__ = (
-    CUDAAccelerator.__doc__
-    + """
-... deprecated:: 1.9
-    Use ``CUDAAccelerator`` instead.
-"""
-)
