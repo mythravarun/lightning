@@ -49,7 +49,7 @@ delivers all of these benefits while ensuring that no task-specific accuracy is 
                 return loss
 
 
-        trainer = Trainer(accelerator="gpu", devices=1, precision=32)
+        trainer = Trainer(accelerator="cuda", devices=1, precision=32)
 
 ----
 
@@ -67,7 +67,7 @@ In most cases, mixed precision uses FP16. Supported `PyTorch operations <https:/
 .. testcode::
     :skipif: not torch.cuda.is_available()
 
-    Trainer(accelerator="gpu", devices=1, precision=16)
+    Trainer(accelerator="cuda", devices=1, precision=16)
 
 
 PyTorch Native
@@ -94,14 +94,14 @@ NVIDIA APEX
 .. testcode::
     :skipif: not _APEX_AVAILABLE or not torch.cuda.is_available()
 
-    Trainer(accelerator="gpu", devices=1, amp_backend="apex", precision=16)
+    Trainer(accelerator="cuda", devices=1, amp_backend="apex", precision=16)
 
 Set the `NVIDIA optimization level <https://nvidia.github.io/apex/amp.html#opt-levels>`__ via the trainer.
 
 .. testcode::
     :skipif: not _APEX_AVAILABLE or not torch.cuda.is_available()
 
-    Trainer(accelerator="gpu", devices=1, amp_backend="apex", amp_level="O2", precision=16)
+    Trainer(accelerator="cuda", devices=1, amp_backend="apex", amp_level="O2", precision=16)
 
 ----
 
@@ -124,7 +124,7 @@ Under the hood, we use `torch.autocast <https://pytorch.org/docs/stable/amp.html
 .. testcode::
     :skipif: not _TORCH_GREATER_EQUAL_1_10 or not torch.cuda.is_available()
 
-    Trainer(accelerator="gpu", devices=1, precision="bf16")
+    Trainer(accelerator="cuda", devices=1, precision="bf16")
 
 It is also possible to use BFloat16 mixed precision on the CPU, relying on MKLDNN under the hood.
 

@@ -218,13 +218,13 @@ as well as custom accelerator instances.
     trainer = Trainer(accelerator="cpu")
 
     # Training with GPU Accelerator using 2 GPUs
-    trainer = Trainer(devices=2, accelerator="gpu")
+    trainer = Trainer(devices=2, accelerator="cuda")
 
     # Training with TPU Accelerator using 8 tpu cores
     trainer = Trainer(devices=8, accelerator="tpu")
 
     # Training with GPU Accelerator using the DistributedDataParallel strategy
-    trainer = Trainer(devices=4, accelerator="gpu", strategy="ddp")
+    trainer = Trainer(devices=4, accelerator="cuda", strategy="ddp")
 
 .. note:: The ``"auto"`` option recognizes the machine you are on, and selects the respective ``Accelerator``.
 
@@ -249,8 +249,8 @@ Example::
 
     .. code-block:: python
 
-        # This is part of the built-in `GPUAccelerator`
-        class GPUAccelerator(Accelerator):
+        # This is part of the built-in `CUDAAccelerator`
+        class CUDAAccelerator(Accelerator):
             """Accelerator for GPU devices."""
 
             @staticmethod
@@ -260,7 +260,7 @@ Example::
 
 
         # Training with GPU Accelerator using total number of gpus available on the system
-        Trainer(accelerator="gpu")
+        Trainer(accelerator="cuda")
 
 .. warning:: Passing training strategies (e.g., ``"ddp"``) to ``accelerator`` has been deprecated in v1.5.0
     and will be removed in v1.7.0. Please use the ``strategy`` argument instead.
@@ -377,16 +377,16 @@ such that only one process at a time can access them.
 Example::
 
     # no auto selection (picks first 2 GPUs on system, may fail if other process is occupying)
-    trainer = Trainer(accelerator="gpu", devices=2, auto_select_gpus=False)
+    trainer = Trainer(accelerator="cuda", devices=2, auto_select_gpus=False)
 
     # enable auto selection (will find two available GPUs on system)
-    trainer = Trainer(accelerator="gpu", devices=2, auto_select_gpus=True)
+    trainer = Trainer(accelerator="cuda", devices=2, auto_select_gpus=True)
 
     # specifies all GPUs regardless of its availability
-    Trainer(accelerator="gpu", devices=-1, auto_select_gpus=False)
+    Trainer(accelerator="cuda", devices=-1, auto_select_gpus=False)
 
     # specifies all available GPUs (if only one GPU is not occupied, uses one gpu)
-    Trainer(accelerator="gpu", devices=-1, auto_select_gpus=True)
+    Trainer(accelerator="cuda", devices=-1, auto_select_gpus=True)
 
 auto_lr_find
 ^^^^^^^^^^^^
@@ -575,7 +575,7 @@ based on the accelerator type (``"cpu", "gpu", "tpu", "ipu", "auto"``).
     trainer = Trainer(devices=2, accelerator="cpu")
 
     # Training with GPU Accelerator using GPUs 1 and 3
-    trainer = Trainer(devices=[1, 3], accelerator="gpu")
+    trainer = Trainer(devices=[1, 3], accelerator="cuda")
 
     # Training with TPU Accelerator using 8 tpu cores
     trainer = Trainer(devices=8, accelerator="tpu")
@@ -603,8 +603,8 @@ based on the accelerator type (``"cpu", "gpu", "tpu", "ipu", "auto"``).
 
     .. code-block:: python
 
-        # This is part of the built-in `GPUAccelerator`
-        class GPUAccelerator(Accelerator):
+        # This is part of the built-in `CUDAAccelerator`
+        class CUDAAccelerator(Accelerator):
             """Accelerator for GPU devices."""
 
             @staticmethod
@@ -614,7 +614,7 @@ based on the accelerator type (``"cpu", "gpu", "tpu", "ipu", "auto"``).
 
 
         # Training with GPU Accelerator using total number of gpus available on the system
-        Trainer(accelerator="gpu")
+        Trainer(accelerator="cuda")
 
 enable_checkpointing
 ^^^^^^^^^^^^^^^^^^^^
@@ -1169,7 +1169,7 @@ Half precision, or mixed precision, is the combined use of 32 and 16 bit floatin
     trainer = Trainer(precision=32)
 
     # 16-bit precision
-    trainer = Trainer(precision=16, accelerator="gpu", devices=1)  # works only on CUDA
+    trainer = Trainer(precision=16, accelerator="cuda", devices=1)  # works only on CUDA
 
     # bfloat16 precision
     trainer = Trainer(precision="bf16")
@@ -1194,7 +1194,7 @@ Half precision, or mixed precision, is the combined use of 32 and 16 bit floatin
         :skipif: not _APEX_AVAILABLE or not torch.cuda.is_available()
 
         # turn on 16-bit
-        trainer = Trainer(amp_backend="apex", amp_level="O2", precision=16, accelerator="gpu", devices=1)
+        trainer = Trainer(amp_backend="apex", amp_level="O2", precision=16, accelerator="cuda", devices=1)
 
 profiler
 ^^^^^^^^
@@ -1338,7 +1338,7 @@ Supports passing different training strategies with aliases (ddp, ddp_spawn, etc
 .. code-block:: python
 
     # Training with the DistributedDataParallel strategy on 4 GPUs
-    trainer = Trainer(strategy="ddp", accelerator="gpu", devices=4)
+    trainer = Trainer(strategy="ddp", accelerator="cuda", devices=4)
 
     # Training with the DDP Spawn strategy using 4 cpu processes
     trainer = Trainer(strategy="ddp_spawn", accelerator="cpu", devices=4)
@@ -1358,7 +1358,7 @@ Supports passing different training strategies with aliases (ddp, ddp_spawn, etc
             )
 
 
-    trainer = Trainer(strategy=CustomDDPStrategy(), accelerator="gpu", devices=2)
+    trainer = Trainer(strategy=CustomDDPStrategy(), accelerator="cuda", devices=2)
 
 See Also:
     - :ref:`Multi GPU Training <multi_gpu>`.

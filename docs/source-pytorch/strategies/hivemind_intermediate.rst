@@ -41,7 +41,7 @@ to overlap communication with computation.
             offload_optimizer=True,  # required to delay averaging
             scheduler_fn=partial(torch.optim.lr_scheduler.ExponentialLR, gamma=...),
         ),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
 
@@ -75,7 +75,7 @@ Offloading the Optimizer state to the CPU works the same as :ref:`deepspeed-zero
             offload_optimizer=True,
             scheduler_fn=partial(torch.optim.lr_scheduler.ExponentialLR, gamma=...),
         ),
-        accelerator="gpu",
+        accelerator="cuda",
         devices=1,
     )
 
@@ -95,5 +95,5 @@ By default, Hivemind accumulates gradients in a separate buffer. This means addi
     from pytorch_lightning.strategies import HivemindStrategy
 
     trainer = pl.Trainer(
-        strategy=HivemindStrategy(target_batch_size=8192, reuse_grad_buffers=True), accelerator="gpu", devices=1
+        strategy=HivemindStrategy(target_batch_size=8192, reuse_grad_buffers=True), accelerator="cuda", devices=1
     )

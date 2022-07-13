@@ -43,7 +43,7 @@ To train a model using multiple nodes, do the following:
     .. code-block:: python
 
        # train on 32 GPUs across 4 nodes
-       trainer = Trainer(accelerator="gpu", devices=8, num_nodes=4, strategy="ddp")
+       trainer = Trainer(accelerator="cuda", devices=8, num_nodes=4, strategy="ddp")
 
 ----
 

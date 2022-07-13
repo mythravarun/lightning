@@ -12,10 +12,10 @@ It also returns the optional description and parameters for initialising the Str
 .. code-block:: python
 
     # Training with the DDP Strategy with `find_unused_parameters` as False
-    trainer = Trainer(strategy="ddp_find_unused_parameters_false", accelerator="gpu", devices=4)
+    trainer = Trainer(strategy="ddp_find_unused_parameters_false", accelerator="cuda", devices=4)
 
     # Training with DeepSpeed ZeRO Stage 3 and CPU Offload
-    trainer = Trainer(strategy="deepspeed_stage_3_offload", accelerator="gpu", devices=3)
+    trainer = Trainer(strategy="deepspeed_stage_3_offload", accelerator="cuda", devices=3)
 
     # Training with the TPU Spawn Strategy with `debug` as True
     trainer = Trainer(strategy="tpu_spawn_debug", accelerator="tpu", devices=8)
@@ -46,4 +46,4 @@ Additionally, you can pass your custom registered training strategies to the ``s
         checkpoint_io=custom_checkpoint_io,
     )
 
-    trainer = Trainer(strategy="ddp_custom_checkpoint_io", accelerator="gpu", devices=2)
+    trainer = Trainer(strategy="ddp_custom_checkpoint_io", accelerator="cuda", devices=2)

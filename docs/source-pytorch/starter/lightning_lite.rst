@@ -132,13 +132,13 @@ Here is how to train on eight GPUs with `torch.bfloat16 <https://pytorch.org/doc
 
 .. code-block:: python
 
-    Lite(strategy="ddp", devices=8, accelerator="gpu", precision="bf16").run(10)
+    Lite(strategy="ddp", devices=8, accelerator="cuda", precision="bf16").run(10)
 
 Here is how to use `DeepSpeed Zero3 <https://www.deepspeed.ai/news/2021/03/07/zero3-offload.html>`_ with eight GPUs and precision 16:
 
 .. code-block:: python
 
-    Lite(strategy="deepspeed", devices=8, accelerator="gpu", precision=16).run(10)
+    Lite(strategy="deepspeed", devices=8, accelerator="cuda", precision=16).run(10)
 
 :class:`~pytorch_lightning.lite.LightningLite` can also figure it out automatically for you!
 
@@ -181,7 +181,7 @@ Here is an example while running on 256 GPUs (eight GPUs times 32 nodes).
             self.barrier()
 
 
-    Lite(strategy="ddp", devices=8, num_nodes=32, accelerator="gpu").run()
+    Lite(strategy="ddp", devices=8, num_nodes=32, accelerator="cuda").run()
 
 
 If you require custom data or model device placement, you can deactivate
@@ -356,13 +356,13 @@ Choose one of ``"cpu"``, ``"gpu"``, ``"tpu"``, ``"auto"`` (IPU support is coming
     lite = Lite(accelerator="cpu")
 
     # Running with GPU Accelerator using 2 GPUs
-    lite = Lite(devices=2, accelerator="gpu")
+    lite = Lite(devices=2, accelerator="cuda")
 
     # Running with TPU Accelerator using 8 tpu cores
     lite = Lite(devices=8, accelerator="tpu")
 
     # Running with GPU Accelerator using the DistributedDataParallel strategy
-    lite = Lite(devices=4, accelerator="gpu", strategy="ddp")
+    lite = Lite(devices=4, accelerator="cuda", strategy="ddp")
 
 The ``"auto"`` option recognizes the machine you are on and selects the available accelerator.
 
@@ -380,7 +380,7 @@ Choose a training strategy: ``"dp"``, ``"ddp"``, ``"ddp_spawn"``, ``"tpu_spawn"`
 .. code-block:: python
 
     # Running with the DistributedDataParallel strategy on 4 GPUs
-    lite = Lite(strategy="ddp", accelerator="gpu", devices=4)
+    lite = Lite(strategy="ddp", accelerator="cuda", devices=4)
 
     # Running with the DDP Spawn strategy using 4 cpu processes
     lite = Lite(strategy="ddp_spawn", accelerator="cpu", devices=4)
@@ -392,7 +392,7 @@ Additionally, you can pass in your custom strategy by configuring additional par
 
     from pytorch_lightning.strategies import DeepSpeedStrategy
 
-    lite = Lite(strategy=DeepSpeedStrategy(stage=2), accelerator="gpu", devices=2)
+    lite = Lite(strategy=DeepSpeedStrategy(stage=2), accelerator="cuda", devices=2)
 
 
 Support for Horovod and Fully Sharded training strategies are coming soon.
@@ -416,15 +416,15 @@ Configure the devices to run on. Can be of type:
     lite = Lite(devices=0)
 
     # int: run on two GPUs
-    lite = Lite(devices=2, accelerator="gpu")
+    lite = Lite(devices=2, accelerator="cuda")
 
     # list: run on GPUs 1, 4 (by bus ordering)
-    lite = Lite(devices=[1, 4], accelerator="gpu")
-    lite = Lite(devices="1, 4", accelerator="gpu")  # equivalent
+    lite = Lite(devices=[1, 4], accelerator="cuda")
+    lite = Lite(devices="1, 4", accelerator="cuda")  # equivalent
 
     # -1: run on all GPUs
-    lite = Lite(devices=-1, accelerator="gpu")
-    lite = Lite(devices="-1", accelerator="gpu")  # equivalent
+    lite = Lite(devices=-1, accelerator="cuda")
+    lite = Lite(devices="-1", accelerator="cuda")  # equivalent
 
 
 
@@ -434,15 +434,15 @@ gpus
 .. warning:: ``gpus=x`` has been deprecated in v1.7 and will be removed in v2.0.
     Please use ``accelerator='gpu'`` and ``devices=x`` instead.
 
-Shorthand for setting ``devices=X`` and ``accelerator="gpu"``.
+Shorthand for setting ``devices=X`` and ``accelerator="cuda"``.
 
 .. code-block:: python
 
     # Run on two GPUs
-    lite = Lite(accelerator="gpu", devices=2)
+    lite = Lite(accelerator="cuda", devices=2)
 
     # Equivalent
-    lite = Lite(devices=2, accelerator="gpu")
+    lite = Lite(devices=2, accelerator="cuda")
 
 
 tpu_cores
@@ -561,7 +561,7 @@ You can optionally pass arguments to the run method. For example, the hyperparam
             """Here goes your training loop"""
 
 
-    lite = Lite(accelerator="gpu", devices=2)
+    lite = Lite(accelerator="cuda", devices=2)
     lite.run(learning_rate=0.01, num_layers=12)
 
 

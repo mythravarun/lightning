@@ -70,7 +70,7 @@ from your LightningModule ``init`` and ``forward`` method.
 
 
     # train it
-    trainer = Trainer(devices=2, accelerator="gpu", strategy="ddp")
+    trainer = Trainer(devices=2, accelerator="cuda", strategy="ddp")
     model = AutoEncoderSystem()
     trainer.fit(model, train_dataloader, val_dataloader)
     trainer.save_checkpoint("best_model.ckpt")

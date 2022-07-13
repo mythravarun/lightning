@@ -25,16 +25,16 @@ In DDP, DDP_SPAWN, Deepspeed, DDP_SHARDED, or Horovod your effective batch size 
 .. code-block:: python
 
     # effective batch size = 7 * 8
-    Trainer(accelerator="gpu", devices=8, strategy="ddp")
-    Trainer(accelerator="gpu", devices=8, strategy="ddp_spawn")
-    Trainer(accelerator="gpu", devices=8, strategy="ddp_sharded")
-    Trainer(accelerator="gpu", devices=8, strategy="horovod")
+    Trainer(accelerator="cuda", devices=8, strategy="ddp")
+    Trainer(accelerator="cuda", devices=8, strategy="ddp_spawn")
+    Trainer(accelerator="cuda", devices=8, strategy="ddp_sharded")
+    Trainer(accelerator="cuda", devices=8, strategy="horovod")
 
     # effective batch size = 7 * 8 * 10
-    Trainer(accelerator="gpu", devices=8, num_nodes=10, strategy="ddp")
-    Trainer(accelerator="gpu", devices=8, num_nodes=10, strategy="ddp_spawn")
-    Trainer(accelerator="gpu", devices=8, num_nodes=10, strategy="ddp_sharded")
-    Trainer(accelerator="gpu", devices=8, num_nodes=10, strategy="horovod")
+    Trainer(accelerator="cuda", devices=8, num_nodes=10, strategy="ddp")
+    Trainer(accelerator="cuda", devices=8, num_nodes=10, strategy="ddp_spawn")
+    Trainer(accelerator="cuda", devices=8, num_nodes=10, strategy="ddp_sharded")
+    Trainer(accelerator="cuda", devices=8, num_nodes=10, strategy="horovod")
 
 
 .. note:: Huge batch sizes are actually really bad for convergence. Check out:
@@ -46,10 +46,10 @@ The reason is that the full batch gets split evenly between all devices.
 .. code-block:: python
 
     # effective batch size = 7, each GPU sees a batch size of 1 except the last GPU
-    Trainer(accelerator="gpu", devices=8, strategy="dp")
+    Trainer(accelerator="cuda", devices=8, strategy="dp")
 
     # effective batch size = 7, first GPU sees a batch size of 4, the other sees batch size 3
-    Trainer(accelerator="gpu", devices=2, num_nodes=10, strategy="dp")
+    Trainer(accelerator="cuda", devices=2, num_nodes=10, strategy="dp")
 
 
 ----
@@ -63,7 +63,7 @@ To use multiple GPUs on notebooks, use the *DP* mode.
 
 .. code-block:: python
 
-    Trainer(accelerator="gpu", devices=4, strategy="dp")
+    Trainer(accelerator="cuda", devices=4, strategy="dp")
 
 If you want to use other models, please launch your training via the command-shell.
 
@@ -88,10 +88,10 @@ If you `ddp` your code doesn't need to be pickled.
 
 .. code-block:: python
 
-    Trainer(accelerator="gpu", devices=4, strategy="ddp")
+    Trainer(accelerator="cuda", devices=4, strategy="ddp")
 
 If you use `ddp_spawn` the pickling requirement remains. This is a limitation of Python.
 
 .. code-block:: python
 
-    Trainer(accelerator="gpu", devices=4, strategy="ddp_spawn")
+    Trainer(accelerator="cuda", devices=4, strategy="ddp_spawn")
