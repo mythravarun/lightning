@@ -23,7 +23,7 @@ class GPUAccelerator(CUDAAccelerator):
         Please use the CUDAAccelerator instead.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         rank_zero_deprecation(
             "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9."
             " Please use the CUDAAccelerator instead!"
