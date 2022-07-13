@@ -238,10 +238,10 @@ Here are some examples:
 ```python
 # 8 GPUs
 # no code changes needed
-trainer = Trainer(max_epochs=1, accelerator="gpu", devices=8)
+trainer = Trainer(max_epochs=1, accelerator="cuda", devices=8)
 
 # 256 GPUs
-trainer = Trainer(max_epochs=1, accelerator="gpu", devices=8, num_nodes=32)
+trainer = Trainer(max_epochs=1, accelerator="cuda", devices=8, num_nodes=32)
 ```
 
 <summary>Train on TPUs without code changes</summary>
