@@ -168,7 +168,8 @@ class AcceleratorConnector:
         # 1. Parsing flags
         # Get registered strategies, built-in accelerators and precision plugins
         self._registered_strategies = StrategyRegistry.available_strategies()
-        self._accelerator_types = AcceleratorRegistry.available_accelerators()
+        # gpu is not available as accelerator, but maps to 'cuda' and 'mps' at the same time.
+        self._accelerator_types = AcceleratorRegistry.available_accelerators() + ["gpu"]
         self._precision_types = ("16", "32", "64", "bf16", "mixed")
 
         # Raise an exception if there are conflicts between flags
@@ -202,7 +203,11 @@ class AcceleratorConnector:
         # handle `auto` and `None`
         self._set_accelerator_if_ipu_strategy_is_passed()
         if self._accelerator_flag == "auto" or self._accelerator_flag is None:
-            self._accelerator_flag = self._choose_accelerator()
+            self._accelerator_flag = self._choose_auto_accelerator()
+
+        if self._accelerator_flag == "gpu":
+            self._accelerator_flag = self._choose_gpu_accelerator_backend()
+
         self._set_parallel_devices_and_init_accelerator()
 
         # 3. Instantiate ClusterEnvironment
@@ -370,12 +375,12 @@ class AcceleratorConnector:
                             )
                         self._accelerator_flag = "cpu"
                     if self._strategy_flag.parallel_devices[0].type == "cuda":
-                        if self._accelerator_flag and self._accelerator_flag not in ("auto", "gpu"):
+                        if self._accelerator_flag and self._accelerator_flag not in ("auto", "gpu", "cuda"):
                             raise MisconfigurationException(
                                 f"GPU parallel_devices set through {self._strategy_flag.__class__.__name__} class,"
                                 f" but accelerator set to {self._accelerator_flag}, please choose one device type"
                             )
-                        self._accelerator_flag = "gpu"
+                        self._accelerator_flag = "cuda"
                     self._parallel_devices = self._strategy_flag.parallel_devices
 
         amp_type = amp_type if isinstance(amp_type, str) else None
@@ -417,7 +422,7 @@ class AcceleratorConnector:
         if self._devices_flag == "auto" and self._accelerator_flag is None:
             raise MisconfigurationException(
                 f"You passed `devices={devices}` but haven't specified"
-                " `accelerator=('auto'|'tpu'|'gpu'|'ipu'|'cpu'|'hpu'|'mps')` for the devices mapping."
+                " `accelerator=('auto'|'tpu'|'gpu'|'cuda'|'ipu'|'cpu'|'hpu'|'mps')` for the devices mapping."
             )
 
     def _map_deprecated_devices_specific_info_to_accelerator_and_device_flag(
@@ -475,7 +480,7 @@ class AcceleratorConnector:
                 if tpu_cores:
                     self._accelerator_flag = "tpu"
                 if gpus:
-                    self._accelerator_flag = "gpu"
+                    self._accelerator_flag = "cuda"
                 if num_processes:
                     self._accelerator_flag = "cpu"
 
@@ -485,7 +490,7 @@ class AcceleratorConnector:
         if isinstance(self._strategy_flag, IPUStrategy):
             self._accelerator_flag = "ipu"
 
-    def _choose_accelerator(self) -> str:
+    def _choose_auto_accelerator(self) -> str:
         """Choose the accelerator type (str) based on availability when ``accelerator='auto'``."""
         if self._accelerator_flag == "auto":
             if _TPU_AVAILABLE:
@@ -496,9 +501,17 @@ class AcceleratorConnector:
                 return "hpu"
             if MPSAccelerator.is_available():
                 return "mps"
-            if torch.cuda.is_available() and torch.cuda.device_count() > 0:
-                return "gpu"
+            if CUDAAccelerator.is_available():
+                return "cuda"
         return "cpu"
+
+    def _choose_gpu_accelerator_backend(self) -> str:
+        if MPSAccelerator.is_available():
+            return "mps"
+        if CUDAAccelerator.is_available():
+            return "cuda"
+
+        raise RuntimeError("Could not find a valid backend for accelerator 'gpu'.")
 
     def _set_parallel_devices_and_init_accelerator(self) -> None:
         if isinstance(self._accelerator_flag, Accelerator):
@@ -577,9 +590,8 @@ class AcceleratorConnector:
         if self._num_nodes_flag > 1:
             return DDPStrategy.strategy_name
         if len(self._parallel_devices) <= 1:
-            # TODO: Change this once gpu accelerator was renamed to cuda accelerator
             if isinstance(self._accelerator_flag, (CUDAAccelerator, MPSAccelerator)) or (
-                isinstance(self._accelerator_flag, str) and self._accelerator_flag in ("gpu", "mps")
+                isinstance(self._accelerator_flag, str) and self._accelerator_flag in ("gpu", "cuda", "mps")
             ):
                 device = device_parser.determine_root_gpu_device(self._parallel_devices)
             else:

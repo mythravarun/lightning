@@ -742,3 +742,20 @@ def test_plugin_only_one_instance_for_one_type(plugins, expected):
 def test_passing_zero_and_empty_list_to_devices_flag(accelerator, devices):
     with pytest.raises(MisconfigurationException, match="value is not a valid input using"):
         Trainer(accelerator=accelerator, devices=devices)
+
+
+@RunIf(mps=False)
+@mock.patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": "0"})
+@mock.patch("torch.cuda.device_count", return_value=1)
+@mock.patch("torch.cuda.is_available", return_value=True)
+def test_accelerator_choice_gpu_nvidia():
+    trainer = Trainer(accelerator="gpu")
+    assert isinstance(trainer.accelerator, CUDAAccelerator)
+    assert trainer._accelerator_connector._accelerator_flag == "cuda"
+
+
+@RunIf(mps=True)
+def test_accelerator_choice_gpu_mps():
+    trainer = Trainer(accelerator="gpu")
+    assert isinstance(trainer.accelerator, MPSAccelerator)
+    assert trainer._accelerator_connector._accelerator_flag == "mps"
