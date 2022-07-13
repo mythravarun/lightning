@@ -63,7 +63,7 @@ class LightningLite(ABC):
         precision: Double precision (``64``), full precision (``32``), half precision (``16``),
             or bfloat16 precision (``"bf16"``).
         plugins: One or several custom plugins
-        gpus: Provides the same function as the ``devices`` argument but implies ``accelerator="gpu"``.
+        gpus: Provides the same function as the ``devices`` argument but implies ``accelerator="cuda"``.
         tpu_cores: Provides the same function as the ``devices`` argument but implies ``accelerator="tpu"``.
     """
 

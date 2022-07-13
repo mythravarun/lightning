@@ -22,7 +22,7 @@ from typing_extensions import Literal
 
 from pytorch_lightning.accelerators.accelerator import Accelerator
 from pytorch_lightning.accelerators.cpu import CPUAccelerator
-from pytorch_lightning.accelerators.gpu import GPUAccelerator
+from pytorch_lightning.accelerators.cuda import CUDAAccelerator
 from pytorch_lightning.accelerators.hpu import HPUAccelerator
 from pytorch_lightning.accelerators.ipu import IPUAccelerator
 from pytorch_lightning.accelerators.mps import MPSAccelerator
@@ -534,7 +534,7 @@ class AcceleratorConnector:
             self._devices_flag = self.accelerator.auto_device_count()
 
     def _set_devices_flag_if_auto_select_gpus_passed(self) -> None:
-        if self._auto_select_gpus and isinstance(self._gpus, int) and isinstance(self.accelerator, GPUAccelerator):
+        if self._auto_select_gpus and isinstance(self._gpus, int) and isinstance(self.accelerator, CUDAAccelerator):
             self._devices_flag = pick_multiple_gpus(self._gpus)
             log.info(f"Auto select gpus: {self._devices_flag}")
 
@@ -578,7 +578,7 @@ class AcceleratorConnector:
             return DDPStrategy.strategy_name
         if len(self._parallel_devices) <= 1:
             # TODO: Change this once gpu accelerator was renamed to cuda accelerator
-            if isinstance(self._accelerator_flag, (GPUAccelerator, MPSAccelerator)) or (
+            if isinstance(self._accelerator_flag, (CUDAAccelerator, MPSAccelerator)) or (
                 isinstance(self._accelerator_flag, str) and self._accelerator_flag in ("gpu", "mps")
             ):
                 device = device_parser.determine_root_gpu_device(self._parallel_devices)
@@ -631,7 +631,7 @@ class AcceleratorConnector:
             )
 
         hvd.init()
-        if isinstance(self.accelerator, GPUAccelerator):
+        if isinstance(self.accelerator, CUDAAccelerator):
             # Horovod assigns one local GPU per process
             self._parallel_devices = [torch.device(f"cuda:{i}") for i in range(hvd.local_size())]
         else:
