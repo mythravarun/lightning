@@ -23,7 +23,7 @@ as Lightning will do it for you.
 .. testcode::
     :skipif: torch.cuda.device_count() < 1
 
-    trainer = Trainer(accelerator="cuda", devices=1)
+    trainer = Trainer(accelerator="gpu", devices=1)
 
 ----------------
 
@@ -37,7 +37,7 @@ To use multiple GPUs, set the number of devices in the Trainer or the index of t
 
 .. code::
 
-    trainer = Trainer(accelerator="cuda", devices=4)
+    trainer = Trainer(accelerator="gpu", devices=4)
 
 Choosing GPU devices
 ^^^^^^^^^^^^^^^^^^^^
@@ -53,20 +53,20 @@ a comma separated list of GPU ids:
     :skipif: torch.cuda.device_count() < 2
 
     # DEFAULT (int) specifies how many GPUs to use per node
-    Trainer(accelerator="cuda", devices=k)
+    Trainer(accelerator="gpu", devices=k)
 
     # Above is equivalent to
-    Trainer(accelerator="cuda", devices=list(range(k)))
+    Trainer(accelerator="gpu", devices=list(range(k)))
 
     # Specify which GPUs to use (don't use when running on cluster)
-    Trainer(accelerator="cuda", devices=[0, 1])
+    Trainer(accelerator="gpu", devices=[0, 1])
 
     # Equivalent using a string
-    Trainer(accelerator="cuda", devices="0, 1")
+    Trainer(accelerator="gpu", devices="0, 1")
 
     # To use all available GPUs put -1 or '-1'
     # equivalent to list(range(torch.cuda.device_count()))
-    Trainer(accelerator="cuda", devices=-1)
+    Trainer(accelerator="gpu", devices=-1)
 
 The table below lists examples of possible input formats and how they are interpreted by Lightning.
 

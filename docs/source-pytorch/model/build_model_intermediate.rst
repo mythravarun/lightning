@@ -14,7 +14,7 @@ Enable advanced training features using Trainer arguments. These are SOTA techni
    # train 1TB+ parameter models with Deepspeed/fsdp
    trainer = Trainer(
        devices=4,
-       accelerator="cuda",
+       accelerator="gpu",
        strategy="deepspeed_stage_2",
        precision=16
     )

@@ -52,7 +52,7 @@ after which the root node will aggregate the results.
     :skipif: torch.cuda.device_count() < 2
 
     # train on 2 GPUs (using DP mode)
-    trainer = Trainer(accelerator="cuda", devices=2, strategy="dp")
+    trainer = Trainer(accelerator="gpu", devices=2, strategy="dp")
 
 Distributed Data Parallel
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,10 +73,10 @@ Distributed Data Parallel
 .. code-block:: python
 
     # train on 8 GPUs (same machine (ie: node))
-    trainer = Trainer(accelerator="cuda", devices=8, strategy="ddp")
+    trainer = Trainer(accelerator="gpu", devices=8, strategy="ddp")
 
     # train on 32 GPUs (4 nodes)
-    trainer = Trainer(accelerator="cuda", devices=8, strategy="ddp", num_nodes=4)
+    trainer = Trainer(accelerator="gpu", devices=8, strategy="ddp", num_nodes=4)
 
 This Lightning implementation of DDP calls your script under the hood multiple times with the correct environment
 variables:
@@ -127,7 +127,7 @@ In  this case, we can use DDP2 which behaves like DP in a machine and DDP across
 .. code-block:: python
 
     # train on 32 GPUs (4 nodes)
-    trainer = Trainer(accelerator="cuda", devices=8, strategy="ddp2", num_nodes=4)
+    trainer = Trainer(accelerator="gpu", devices=8, strategy="ddp2", num_nodes=4)
 
 Distributed Data Parallel Spawn
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -145,7 +145,7 @@ project module) you can use the following method:
 .. code-block:: python
 
     # train on 8 GPUs (same machine (ie: node))
-    trainer = Trainer(accelerator="cuda", devices=8, strategy="ddp_spawn")
+    trainer = Trainer(accelerator="gpu", devices=8, strategy="ddp_spawn")
 
 We STRONGLY discourage this use because it has limitations (due to Python and PyTorch):
 
@@ -217,7 +217,7 @@ Horovod can be configured in the training script to run with any number of GPUs 
 .. code-block:: python
 
     # train Horovod on GPU (number of GPUs / machines provided on command-line)
-    trainer = Trainer(strategy="horovod", accelerator="cuda", devices=1)
+    trainer = Trainer(strategy="horovod", accelerator="gpu", devices=1)
 
     # train Horovod on CPU (number of processes / machines provided on command-line)
     trainer = Trainer(strategy="horovod")
@@ -253,7 +253,7 @@ but Bagua can usually produce a higher training throughput due to its backend wr
 .. code-block:: python
 
     # train on 4 GPUs (using Bagua mode)
-    trainer = Trainer(strategy="bagua", accelerator="cuda", devices=4)
+    trainer = Trainer(strategy="bagua", accelerator="gpu", devices=4)
 
 
 By specifying the ``algorithm`` in the ``BaguaStrategy``, you can select more advanced training algorithms featured by Bagua:
@@ -264,35 +264,35 @@ By specifying the ``algorithm`` in the ``BaguaStrategy``, you can select more ad
     # train on 4 GPUs, using Bagua Gradient AllReduce algorithm
     trainer = Trainer(
         strategy=BaguaStrategy(algorithm="gradient_allreduce"),
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
     )
 
     # train on 4 GPUs, using Bagua ByteGrad algorithm
     trainer = Trainer(
         strategy=BaguaStrategy(algorithm="bytegrad"),
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
     )
 
     # train on 4 GPUs, using Bagua Decentralized SGD
     trainer = Trainer(
         strategy=BaguaStrategy(algorithm="decentralized"),
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
     )
 
     # train on 4 GPUs, using Bagua Low Precision Decentralized SGD
     trainer = Trainer(
         strategy=BaguaStrategy(algorithm="low_precision_decentralized"),
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
     )
 
     # train on 4 GPUs, using Asynchronous Model Average algorithm, with a synchronization interval of 100ms
     trainer = Trainer(
         strategy=BaguaStrategy(algorithm="async", sync_interval_ms=100),
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
     )
 
@@ -315,7 +315,7 @@ To use *QAdam*, we need to initialize
 
     model = MyModel()
     trainer = Trainer(
-        accelerator="cuda",
+        accelerator="gpu",
         devices=4,
         strategy=BaguaStrategy(algorithm="qadam"),
     )
@@ -466,7 +466,7 @@ Lightning supports the use of Torch Distributed Elastic to enable fault-tolerant
 
 .. code-block:: python
 
-    Trainer(accelerator="cuda", devices=8, strategy="ddp")
+    Trainer(accelerator="gpu", devices=8, strategy="ddp")
 
 To launch a fault-tolerant job, run the following on all nodes.
 
@@ -511,4 +511,4 @@ Lightning allows explicitly specifying the backend via the `process_group_backen
     ddp = DDPStrategy(process_group_backend="nccl")
 
     # Configure the strategy on the Trainer
-    trainer = Trainer(strategy=ddp, accelerator="cuda", devices=8)
+    trainer = Trainer(strategy=ddp, accelerator="gpu", devices=8)

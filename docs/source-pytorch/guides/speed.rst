@@ -34,13 +34,13 @@ Lightning supports a variety of plugins to speed up distributed GPU training. Mo
 .. code-block:: python
 
     # run on 1 gpu
-    trainer = Trainer(accelerator="cuda", devices=1)
+    trainer = Trainer(accelerator="gpu", devices=1)
 
     # train on 8 GPUs, using the DDP strategy
-    trainer = Trainer(accelerator="cuda", devices=8, strategy="ddp")
+    trainer = Trainer(accelerator="gpu", devices=8, strategy="ddp")
 
     # train on multiple GPUs across nodes (uses 8 GPUs in total)
-    trainer = Trainer(accelerator="cuda", devices=2, num_nodes=4)
+    trainer = Trainer(accelerator="gpu", devices=2, num_nodes=4)
 
 
 GPU Training Speedup Tips
@@ -213,7 +213,7 @@ Lightning offers mixed precision training for GPUs and CPUs, as well as bfloat16
     :skipif: torch.cuda.device_count() < 4
 
     # 16-bit precision
-    trainer = Trainer(precision=16, accelerator="cuda", devices=4)
+    trainer = Trainer(precision=16, accelerator="gpu", devices=4)
 
 
 Read more about :ref:`mixed-precision training <speed-amp>`.

@@ -41,4 +41,4 @@ When everything works, switch back to GPU by changing only the accelerator.
 
 .. code-block:: python
 
-    trainer = Trainer(accelerator="cuda", strategy="ddp", devices=2)
+    trainer = Trainer(accelerator="gpu", strategy="ddp", devices=2)

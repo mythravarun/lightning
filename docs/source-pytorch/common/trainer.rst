@@ -218,13 +218,13 @@ as well as custom accelerator instances.
     trainer = Trainer(accelerator="cpu")
 
     # Training with GPU Accelerator using 2 GPUs
-    trainer = Trainer(devices=2, accelerator="cuda")
+    trainer = Trainer(devices=2, accelerator="gpu")
 
     # Training with TPU Accelerator using 8 tpu cores
     trainer = Trainer(devices=8, accelerator="tpu")
 
     # Training with GPU Accelerator using the DistributedDataParallel strategy
-    trainer = Trainer(devices=4, accelerator="cuda", strategy="ddp")
+    trainer = Trainer(devices=4, accelerator="gpu", strategy="ddp")
 
 .. note:: The ``"auto"`` option recognizes the machine you are on, and selects the respective ``Accelerator``.
 
@@ -260,7 +260,7 @@ Example::
 
 
         # Training with GPU Accelerator using total number of gpus available on the system
-        Trainer(accelerator="cuda")
+        Trainer(accelerator="gpu")
 
 .. warning:: Passing training strategies (e.g., ``"ddp"``) to ``accelerator`` has been deprecated in v1.5.0
     and will be removed in v1.7.0. Please use the ``strategy`` argument instead.
@@ -377,16 +377,16 @@ such that only one process at a time can access them.
 Example::
 
     # no auto selection (picks first 2 GPUs on system, may fail if other process is occupying)
-    trainer = Trainer(accelerator="cuda", devices=2, auto_select_gpus=False)
+    trainer = Trainer(accelerator="gpu", devices=2, auto_select_gpus=False)
 
     # enable auto selection (will find two available GPUs on system)
-    trainer = Trainer(accelerator="cuda", devices=2, auto_select_gpus=True)
+    trainer = Trainer(accelerator="gpu", devices=2, auto_select_gpus=True)
 
     # specifies all GPUs regardless of its availability
-    Trainer(accelerator="cuda", devices=-1, auto_select_gpus=False)
+    Trainer(accelerator="gpu", devices=-1, auto_select_gpus=False)
 
     # specifies all available GPUs (if only one GPU is not occupied, uses one gpu)
-    Trainer(accelerator="cuda", devices=-1, auto_select_gpus=True)
+    Trainer(accelerator="gpu", devices=-1, auto_select_gpus=True)
 
 auto_lr_find
 ^^^^^^^^^^^^
@@ -575,7 +575,7 @@ based on the accelerator type (``"cpu", "gpu", "tpu", "ipu", "auto"``).
     trainer = Trainer(devices=2, accelerator="cpu")
 
     # Training with GPU Accelerator using GPUs 1 and 3
-    trainer = Trainer(devices=[1, 3], accelerator="cuda")
+    trainer = Trainer(devices=[1, 3], accelerator="gpu")
 
     # Training with TPU Accelerator using 8 tpu cores
     trainer = Trainer(devices=8, accelerator="tpu")
@@ -614,7 +614,7 @@ based on the accelerator type (``"cpu", "gpu", "tpu", "ipu", "auto"``).
 
 
         # Training with GPU Accelerator using total number of gpus available on the system
-        Trainer(accelerator="cuda")
+        Trainer(accelerator="gpu")
 
 enable_checkpointing
 ^^^^^^^^^^^^^^^^^^^^

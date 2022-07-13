@@ -41,16 +41,16 @@ Here are some examples:
 .. code-block:: python
 
     # Training with the DistributedDataParallel strategy on 4 GPUs
-    trainer = Trainer(strategy="ddp", accelerator="cuda", devices=4)
+    trainer = Trainer(strategy="ddp", accelerator="gpu", devices=4)
 
     # Training with the DistributedDataParallel strategy on 4 GPUs, with options configured
-    trainer = Trainer(strategy=DDPStrategy(find_unused_parameters=False), accelerator="cuda", devices=4)
+    trainer = Trainer(strategy=DDPStrategy(find_unused_parameters=False), accelerator="gpu", devices=4)
 
     # Training with the DDP Spawn strategy using auto accelerator selection
     trainer = Trainer(strategy="ddp_spawn", accelerator="auto", devices=4)
 
     # Training with the DeepSpeed strategy on available GPUs
-    trainer = Trainer(strategy="deepspeed", accelerator="cuda", devices="auto")
+    trainer = Trainer(strategy="deepspeed", accelerator="gpu", devices="auto")
 
     # Training with the DDP strategy using 3 CPU processes
     trainer = Trainer(strategy="ddp", accelerator="cpu", devices=3)
