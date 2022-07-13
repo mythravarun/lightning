@@ -25,6 +25,7 @@ class GPUAccelerator(CUDAAccelerator):
 
     def __init__(self, root_device: torch.device, **kwargs):
         rank_zero_deprecation(
-            "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9. Please use the CUDAAccelerator instead!"
+            "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9."
+            " Please use the CUDAAccelerator instead!"
         )
         super().__init__(root_device=root_device, **kwargs)
