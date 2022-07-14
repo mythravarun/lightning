@@ -201,7 +201,7 @@ def test_pytorch_profiler_register_record_function_deprecation_warning():
 def test_gpu_accelerator_deprecation_warning():
     with pytest.deprecated_call(
         match=(
-            "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9"
+            "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9."
             + " Please use the CUDAAccelerator instead!"
         )
     ):
