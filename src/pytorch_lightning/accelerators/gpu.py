@@ -18,7 +18,9 @@ from pytorch_lightning.utilities.rank_zero import rank_zero_deprecation
 class GPUAccelerator(CUDAAccelerator):
     """Accelerator for NVIDIA GPU devices.
 
-    .. deprecated:: 1.9     Please use the CUDAAccelerator instead.
+    .. deprecated:: 1.9
+
+        Please use the CUDAAccelerator instead.
     """
 
     def __init__(self) -> None:
