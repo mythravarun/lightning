@@ -18,7 +18,7 @@ import pytest
 
 import pytorch_lightning.loggers.base as logger_base
 from pytorch_lightning import Trainer
-from pytorch_lightning.accelerators.cuda import CUDAAccelerator
+from pytorch_lightning.accelerators.gpu import GPUAccelerator
 from pytorch_lightning.core.module import LightningModule
 from pytorch_lightning.demos.boring_classes import BoringModel
 from pytorch_lightning.profiler.advanced import AdvancedProfiler
@@ -201,8 +201,8 @@ def test_pytorch_profiler_register_record_function_deprecation_warning():
 def test_gpu_accelerator_deprecation_warning():
     with pytest.deprecated_call(
         match=(
-            "The CUDAAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9."
+            "The GPUAccelerator has been renamed to CUDAAccelerator and will be removed in v1.9."
             + " Please use the CUDAAccelerator instead!"
         )
     ):
-        CUDAAccelerator()
+        GPUAccelerator()
