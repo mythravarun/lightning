@@ -370,12 +370,12 @@ class AcceleratorConnector:
                             )
                         self._accelerator_flag = "cpu"
                     if self._strategy_flag.parallel_devices[0].type == "cuda":
-                        if self._accelerator_flag and self._accelerator_flag not in ("auto", "gpu"):
+                        if self._accelerator_flag and self._accelerator_flag not in ("auto", "cuda", "gpu"):
                             raise MisconfigurationException(
                                 f"GPU parallel_devices set through {self._strategy_flag.__class__.__name__} class,"
                                 f" but accelerator set to {self._accelerator_flag}, please choose one device type"
                             )
-                        self._accelerator_flag = "gpu"
+                        self._accelerator_flag = "cuda"
                     self._parallel_devices = self._strategy_flag.parallel_devices
 
         amp_type = amp_type if isinstance(amp_type, str) else None
@@ -497,7 +497,7 @@ class AcceleratorConnector:
             if MPSAccelerator.is_available():
                 return "mps"
             if torch.cuda.is_available() and torch.cuda.device_count() > 0:
-                return "gpu"
+                return "cuda"
         return "cpu"
 
     def _set_parallel_devices_and_init_accelerator(self) -> None:
@@ -580,7 +580,7 @@ class AcceleratorConnector:
         if len(self._parallel_devices) <= 1:
             # TODO: Change this once gpu accelerator was renamed to cuda accelerator
             if isinstance(self._accelerator_flag, (CUDAAccelerator, MPSAccelerator)) or (
-                isinstance(self._accelerator_flag, str) and self._accelerator_flag in ("gpu", "mps")
+                isinstance(self._accelerator_flag, str) and self._accelerator_flag in ("cuda", "gpu", "mps")
             ):
                 device = device_parser.determine_root_gpu_device(self._parallel_devices)
             else:
@@ -609,7 +609,7 @@ class AcceleratorConnector:
         if (
             strategy_flag in DDPFullyShardedNativeStrategy.get_registered_strategies()
             or isinstance(self._strategy_flag, DDPFullyShardedNativeStrategy)
-        ) and self._accelerator_flag != "gpu":
+        ) and self._accelerator_flag not in ("cuda", "gpu"):
             raise MisconfigurationException(
                 f"You selected strategy to be `{DDPFullyShardedNativeStrategy.strategy_name}`, "
                 "but GPU accelerator is not used."
